@@ -13,15 +13,15 @@
 module.exports = (robot) ->
 
   getAmbiguousUserText = (users) ->
-    "Be more specific, I know #{users.length} people named like that: #{(user.name for user in users).join(", ")}"
+    "Please be more specific Senpai, I know #{users.length} people named like that: #{(user.name for user in users).join(", ")}"
 
   robot.respond /who is @?([\w .-]+)\?*$/i, (msg) ->
     name = msg.match[1].trim()
 
     if name is "you"
-      msg.send "Who ain't I?"
+      msg.send "Rise Kujikawa!?"
     else if name is robot.name
-      msg.send "The best!"
+      msg.send "The bestest!"
     else
       users = robot.usersForFuzzyName(name)
       if users.length is 1

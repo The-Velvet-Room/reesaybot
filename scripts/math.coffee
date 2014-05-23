@@ -18,5 +18,5 @@ module.exports = (robot) ->
       .get() (err, res, body) ->
         # Response includes non-string keys, so we can't use JSON.parse here.
         json = eval("(#{body})")
-        msg.send json.rhs || 'Could not compute.'
+        msg.send json.rhs || 'I'm sorry Senpai. I couldn't understand you...
 
