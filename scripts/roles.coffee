@@ -21,7 +21,7 @@ module.exports = (robot) ->
     if name is "you"
       msg.send "Who ain't I?"
     else if name is robot.name
-      msg.send "The best."
+      msg.send "The best!"
     else
       users = robot.usersForFuzzyName(name)
       if users.length is 1
@@ -34,7 +34,7 @@ module.exports = (robot) ->
       else if users.length > 1
         msg.send getAmbiguousUserText users
       else
-        msg.send "#{name}? Never heard of 'em"
+        msg.send "#{name}?"
 
   robot.respond /@?([\w .-_]+) is (["'\w: -_]+)[.!]*$/i, (msg) ->
     name    = msg.match[1].trim()
@@ -48,13 +48,13 @@ module.exports = (robot) ->
           user.roles = user.roles or [ ]
 
           if newRole in user.roles
-            msg.send "I know"
+            msg.send "I know Senpai."
           else
             user.roles.push(newRole)
             if name.toLowerCase() is robot.name
               msg.send "Ok, I am #{newRole}."
             else
-              msg.send "Ok, #{name} is #{newRole}."
+              msg.send "Got it! #{name} is #{newRole}!"
         else if users.length > 1
           msg.send getAmbiguousUserText users
         else
@@ -74,9 +74,9 @@ module.exports = (robot) ->
           msg.send "I know."
         else
           user.roles = (role for role in user.roles when role isnt newRole)
-          msg.send "Ok, #{name} is no longer #{newRole}."
+          msg.send "Ok Senpai, #{name} is no longer #{newRole}."
       else if users.length > 1
         msg.send getAmbiguousUserText users
       else
-        msg.send "I don't know anything about #{name}."
+        msg.send "I'm sorry, I don't know anything about #{name}."
 
