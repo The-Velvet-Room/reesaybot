@@ -39,7 +39,7 @@ module.exports = (robot) ->
                         msg.send "my source code changed:\n" + output
                         changes = true
                     else
-                        msg.send "my source code is up-to-date"
+                        msg.send "My source code is up-to-date!"
                 try
                     msg.send "npm update..."
                     child_process.exec 'npm update', (error, stdout, stderr) ->

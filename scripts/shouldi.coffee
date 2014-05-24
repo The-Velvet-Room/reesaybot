@@ -21,5 +21,5 @@ replys = [
 ]
 
 module.exports = (robot) ->
-  robot.hear /should I((\s)+(\w(?! or ))+)+/i, (msg) ->
+  robot.hear /^should I((\s)+(\w(?! or ))+)+/i, (msg) ->
     msg.send msg.random replys
