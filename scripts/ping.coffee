@@ -11,7 +11,7 @@ module.exports = (robot) ->
   robot.respond /PING$/i, (msg) ->
     msg.send "PONG"
 
-  robot.respond /ECHO (.*)$/i, (msg) ->
+  robot.hear /ECHO (.*)$/i, (msg) ->
     msg.send msg.match[1]
 
   robot.respond /TIME$/i, (msg) ->
@@ -19,3 +19,6 @@ module.exports = (robot) ->
 
   robot.respond /DIE$/i, (msg) ->
     msg.send "What did I do to deserve this, Senpai? Idols can't die btw. ;)"
+
+  robot.hear /test$/i, (msg) ->
+  	msg.send "I'm alive, Senpai!"

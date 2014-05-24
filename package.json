@@ -19,7 +19,9 @@
     "hubot-scripts": ">= 2.1.0",
     "optparse": "1.0.3",
     "hubot-irc": "^0.2.5",
-    "jsdom": "0.2.14"
+    "jsdom": "0.2.14",
+    "cleverbot-node": "0.1.1",
+    "flip": "~0.1.0"
   },
   "engines": {
     "node": "0.6.x",
