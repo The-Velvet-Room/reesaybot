@@ -21,7 +21,8 @@
     "hubot-irc": "^0.2.5",
     "jsdom": "0.2.14",
     "cleverbot-node": "0.1.1",
-    "flip": "~0.1.0"
+    "flip": "~0.1.0",
+    "mongodb": "*"
   },
   "engines": {
     "node": "0.6.x",
