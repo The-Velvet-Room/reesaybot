@@ -18,5 +18,5 @@ module.exports = (robot) ->
   robot.hear /what (game\s)?should i speed(\s)?run/i, (msg) ->
     robot.http('http://whatshouldispeedrun.appspot.com/')
       .get() (err, res, body) ->
-        game = JSON.parse body
+        game = body
         msg.send game
