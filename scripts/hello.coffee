@@ -11,16 +11,15 @@
 #   Hello or Good Day make hubot say hello to you back
 #   Good Morning makes hubot say good morning to you back
 hellos = [
-    "Well hello there, %",
-    "Hey %, Hello!",
-    "Heyyy', %",
-    "Good day, %"
+    "Well hello there, %-Senpai!",
+    "Hey %-Senpai, Hello!",
+    "Hey there, %-Senpai!",
+    "Good day, %-Senpai."
 ]
 mornings = [
-    "Good morning, %",
-    "Good morning to you too, %",
-    "Good day, %",
-    "Good 'aye!, %"
+    "Good morning, %-Senpai.",
+    "Good morning to you too, %-Senpai!",
+    "Good day, %-Senpai"
 ]
 module.exports = (robot) ->
     robot.hear /(hello|good( [d'])?ay(e)?)/i, (msg) ->

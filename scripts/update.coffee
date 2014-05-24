@@ -54,7 +54,7 @@ module.exports = (robot) ->
                                 msg.send "all dependencies are up-to-date"
                         if changes
                             downloaded_updates = true
-                            msg.send "I downloaded some updates Senpai! They'll take effect when I restart."
+                            msg.send "I downloaded some updates Senpai! They'll take effect when I restart. You can use <reload> to quickly apply certain changes."
                         else
                             if downloaded_updates
                                 msg.send "I have some pending updates Senpai! Restart me!"

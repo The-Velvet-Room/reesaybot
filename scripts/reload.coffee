@@ -23,7 +23,7 @@ oldListeners = null
 module.exports = (robot) ->
 
   robot.hear /command count/i, (msg) ->
-    msg.send "I am aware of #{msg.robot.commands.length} commands"
+    msg.send "I am aware of #{msg.robot.commands.length} native commands."
 
   robot.respond /reload/i, (msg) ->
     try
@@ -45,7 +45,7 @@ success = (msg) ->
     listener = {}
   oldListeners = null
   oldCommands = null
-  msg.send "Reloaded all scripts"
+  msg.send "Yay! I was able to reload all scripts!"
 
 reloadAllScripts = (msg, success, error) ->
   robot = msg.robot
