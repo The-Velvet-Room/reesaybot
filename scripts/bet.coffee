@@ -17,10 +17,7 @@ totalPot = {}
 startingPoints = 1000
 betLocked = false
 
-module.exports = (robot) ->
-  robot.brain.on 'loaded', ->
-        points = robot.brain.data.points or {}
-	
+module.exports = (robot) ->	
   new Poll robot 
 
   robot.respond /how many points does (.*?) have\??/i, (msg) ->
@@ -45,7 +42,7 @@ class Poll
 
     @robot.brain.on 'loaded', =>
       @points = @robot.brain.data.points
-      @points = {} unless @cache
+      @points = {} unless @points
 
     @robot.hear /start bet (.*) -p (.*)/i, this.createPoll
     @robot.respond /winner ([0-2])/i, this.endPoll
@@ -157,15 +154,22 @@ class Poll
       msg.send("#{user.name} bet #{bet} on “#{votedAnswer.text}”") 
 
 awardPoints = (msg, username, pts) ->
-    @points[username] ?= 0
-    @points[username] += parseInt(pts)
-    @robot.brain.data.points = @points
+    try
+    	@points[username] ?= 0
+    	@points[username] += parseInt(pts)
+    	@robot.brain.data.points = @points
+    catch error
+    	msg.send("Whoopsie! I couldn't store the payouts!")
     msg.send(pts + ' points awarded to ' + username)
 
 removePoints = (msg, username, pts) ->
-  @points[username] -= parseInt(pts)
-  @robot.brain.data.points = points
+  try
+  	@points[username] ?= 0
+  	@points[username] -= parseInt(pts)
+  	@robot.brain.data.points = @points
+  catch error
+    	msg.send("Whoopsie! I couldn't store the payouts!")	
   msg.send(pts + ' points taken away from ' + username)
-  if points[username] <= 0
-    points[username] = 50
+  if @points[username] <= 0
+    @points[username] = 50
     msg.send(username + ' has gone bankrupt! Receiving a small bailout of 50.')
