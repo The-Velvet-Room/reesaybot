@@ -23,12 +23,12 @@ module.exports = (robot) ->
   robot.respond /how many points does (.*?) have\??/i, (msg) ->
       username = msg.match[1]
       points[username] ?= startingPoints
-      msg.send username + ' has ' + points[username] + ' points'
+      msg.send username + ' has ' + @points[username] + ' points'
 
   robot.respond /(.*?) points/i, (msg) ->
       username = msg.match[1]
       points[username] ?= startingPoints
-      msg.send username + ' has ' + points[username] + ' points'
+      msg.send username + ' has ' + @points[username] + ' points'
 
   robot.respond /lock bet(s)/i, (msg) ->
         betLocked = true
