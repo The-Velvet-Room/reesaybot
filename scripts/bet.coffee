@@ -45,7 +45,7 @@ class Poll
     @previousPoll = null
 
     @robot.hear /start bet (.*) -a (.*)/i, this.createPoll
-    @robot.respond /victor is option ([0-2])/i, this.endPoll
+    @robot.respond /winner ([0-2])/i, this.endPoll
     @robot.hear /bet ([0-2]*) ([0-9]*)/i, this.vote
     @robot.respond /show previous bets/i, this.showPreviousPoll
 
@@ -71,10 +71,9 @@ class Poll
 
     victorIndex = parseInt(msg.match[1]) - 1
     betLocked = false
-    @poll.victor = @poll.answers[victorIndex]
+    @poll.victor = @poll.answers[victorIndex].text
 
     msg.send """Here are the results for “#{@poll.question}”:
-    #{@poll.victor} won.
     #{this.printResults(@poll)}
     Payouts will now be distributed.
     """
@@ -112,7 +111,7 @@ class Poll
 
     results = ''
     results += "#{poll.victor} was the vicor.\n\n"
-    results += ("#{answer.text} (#{answer.totalPot})" for answer in poll.answers).join("\n")
+    results += ("#{answer.text} - (#{answer.totalPot})" for answer in poll.answers).join("\n")
     results += "\n\n#{poll.cancelled} canceled their bet."
 
   # Vote management
@@ -132,7 +131,7 @@ class Poll
       if userAnswer is 0
         sorry += 'cancelled your bet.'
       else
-        sorry += "voted for “#{userAnswer}. #{@poll.answers[userAnswer - 1].text}” for this poll."
+        sorry += "bet on “#{userAnswer}. #{@poll.answers[userAnswer - 1].text}”."
 
       return msg.send(sorry)
 
@@ -148,6 +147,8 @@ class Poll
     # Cast vote
     else
       votedAnswer = @poll.answers[number - 1]
+  	  if (!votedAnswer.totalPot)
+  	  	votedAnswer.totalPot = 0
       votedAnswer.votes++
       votedAnswer.totalPot += bet
       @poll.bet[user.name] = bet
