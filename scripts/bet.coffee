@@ -46,7 +46,7 @@ class Poll
 
     @robot.hear /start bet (.*) -a (.*)/i, this.createPoll
     @robot.respond /victor is option ([0-2])/i, this.endPoll
-    @robot.respond /bet ([0-2]*) ([0-9]*)/i, this.vote
+    @robot.hear /bet ([0-2]*) ([0-9]*)/i, this.vote
     @robot.respond /show previous bets/i, this.showPreviousPoll
 
   getUser: (msg) ->
@@ -61,6 +61,7 @@ class Poll
     @poll = { user: user, question: msg.match[1], answers: answers, cancelled: 0, voters: {} }
 
     msg.send """#{user.name} started a bet: #{@poll.question}
+    Bet on a participant by saying: bet <number of choice> <value to bet>
     0. [Cancel my bet]
     #{this.printAnswers()}
     """
@@ -151,7 +152,7 @@ class Poll
       votedAnswer.totalPot += bet
       @poll.bet[user.name] = bet
       @poll.betChoices[user.name] = number - 1
-      msg.send "#{user.name} bet #{bet} on “#{votedAnswer.text}”" 
+      msg.send("#{user.name} bet #{bet} on “#{votedAnswer.text}”") 
 
 awardPoints = (msg, username, pts) ->
     points[username] ?= 0
