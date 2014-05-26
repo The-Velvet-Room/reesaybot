@@ -44,7 +44,7 @@ class Poll
     @poll = null
     @previousPoll = null
 
-    @robot.hear /start bet (.*) -a (.*)/i, this.createPoll
+    @robot.hear /start bet (.*) -p (.*)/i, this.createPoll
     @robot.respond /winner ([0-2])/i, this.endPoll
     @robot.hear /bet ([0-2]*) ([0-9]*)/i, this.vote
     @robot.respond /show previous bets/i, this.showPreviousPoll
@@ -58,11 +58,11 @@ class Poll
     return msg.send('Please provide 2 participants!') if answers.length != 2
 
     user = this.getUser(msg)
-    @poll = { user: user, question: msg.match[1], answers: answers, cancelled: 0, voters: {}, bet: {}, betChoices: {} }
+    @poll = { user: user, question: msg.match[1], answers: answers, cancelled: 0, voters: {}, bets: {}, betChoices: {} }
 
     msg.send """#{user.name} started a bet: #{@poll.question}
     Bet on a participant by saying: bet <number of choice> <value to bet>
-    0. [Cancel my bet]
+    0. [Opt out]
     #{this.printAnswers()}
     """
 
@@ -111,9 +111,8 @@ class Poll
       0
 
     results = ''
-    results += "#{poll.victor} was the vicor.\n\n"
-    results += ("#{answer.text} - (#{answer.totalPot})" for answer in poll.answers).join("\n")
-    results += "\n\n#{poll.cancelled} canceled their bet."
+    results += "#{poll.victor} was the victor.\n\n"
+    results += ("Name: #{answer.text} - TotalPot: (#{answer.totalPot})" for answer in poll.answers).join("\n")
 
   # Vote management
   vote: (msg) =>
@@ -130,7 +129,7 @@ class Poll
     if (userAnswer = @poll.voters[user.name]) != undefined
       sorry = "Sorry #{user.name}-Senpai, but you’ve already "
       if userAnswer is 0
-        sorry += 'cancelled your bet.'
+        sorry += 'opted out.'
       else
         sorry += "bet on “#{userAnswer}. #{@poll.answers[userAnswer - 1].text}”."
 
@@ -150,7 +149,7 @@ class Poll
       votedAnswer = @poll.answers[number - 1]
       votedAnswer.votes++
       votedAnswer.totalPot += bet
-      @poll.bet[user.name] = bet
+      @poll.bets[user.name] = bet
       @poll.betChoices[user.name] = number - 1
       msg.send("#{user.name} bet #{bet} on “#{votedAnswer.text}”") 
 
