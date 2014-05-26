@@ -112,7 +112,7 @@ class Poll
 
     results = ''
     results += "#{poll.victor} was the victor.\n\n"
-    results += ("Name: #{answer.text} - TotalPot: (#{answer.totalPot})" for answer in poll.answers).join("\n")
+    results += ("Name: #{answer.text} - TotalPot: #{answer.totalPot}" for answer in poll.answers).join("\n")
 
   # Vote management
   vote: (msg) =>
@@ -156,12 +156,12 @@ class Poll
 awardPoints = (msg, username, pts) ->
     points[username] ?= 0
     points[username] += parseInt(pts)
-    save(robot)
+    save(@robot)
     msg.send(pts + ' awarded to ' + username)
 
 removePoints = (msg, username, pts) ->
   points[username] -= parseInt(pts)
-  save(robot)
+  save(@robot)
   msg.send(pts + ' points taken away from ' + username)
   if points[username] <= 0
     points[username] = 50
