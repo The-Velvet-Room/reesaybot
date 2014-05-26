@@ -13,6 +13,7 @@
 # Author:
 #   Camtendo
 
+points = {}
 totalPot = {}
 startingPoints = 1000
 betLocked = false
@@ -22,13 +23,13 @@ module.exports = (robot) ->
 
   robot.respond /how many points does (.*?) have\??/i, (msg) ->
       username = msg.match[1]
-      @points[username] ?= startingPoints
-      msg.send username + ' has ' + @points[username] + ' points'
+      points[username] ?= startingPoints
+      msg.send username + ' has ' + points[username] + ' points'
 
   robot.respond /(.*?) points/i, (msg) ->
       username = msg.match[1]
-      @points[username] ?= startingPoints
-      msg.send username + ' has ' + @points[username] + ' points'
+      points[username] ?= startingPoints
+      msg.send username + ' has ' + points[username] + ' points'
 
   robot.respond /lock bet(s)/i, (msg) ->
         betLocked = true
@@ -41,8 +42,8 @@ class Poll
     @previousPoll = null
 
     @robot.brain.on 'loaded', =>
-      @points = @robot.brain.data.points
-      @points = {} unless @points
+      points = @robot.brain.data.points
+      points = {} unless points
 
     @robot.hear /start bet (.*) -p (.*)/i, this.createPoll
     @robot.respond /winner ([0-2])/i, this.endPoll
@@ -155,21 +156,21 @@ class Poll
 
 awardPoints = (msg, username, pts) ->
     try
-    	@points[username] ?= 0
-    	@points[username] += parseInt(pts)
-    	@robot.brain.data.points = @points
+    	points[username] ?= 0
+    	points[username] += parseInt(pts)
+    	@robot.brain.data.points = points
     catch error
-    	msg.send("Whoopsie! I couldn't store the payouts!")
+    	msg.send("Whoopsie! I couldn't store the payouts in the DB! Don't worry, I'll use the fallback.")
     msg.send(pts + ' points awarded to ' + username)
 
 removePoints = (msg, username, pts) ->
   try
-  	@points[username] ?= 0
-  	@points[username] -= parseInt(pts)
-  	@robot.brain.data.points = @points
+  	points[username] ?= 0
+  	points[username] -= parseInt(pts)
+  	@robot.brain.data.points = points
   catch error
-    	msg.send("Whoopsie! I couldn't store the payouts!")	
+    	msg.send("Whoopsie! I couldn't store the payouts in the DB! Don't worry, I'll use the fallback.")	
   msg.send(pts + ' points taken away from ' + username)
-  if @points[username] <= 0
-    @points[username] = 50
+  if points[username] <= 0
+    points[username] = 50
     msg.send(username + ' has gone bankrupt! Receiving a small bailout of 50.')
