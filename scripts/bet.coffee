@@ -56,7 +56,7 @@ class Poll
     @poll = null
     @previousPoll = null
 
-    @robot.respond /poll (.*) -a (.*)/i, this.createPoll
+    @robot.hear /start bet (.*) -a (.*)/i, this.createPoll
     @robot.respond /victor is option ([0-2])/i, this.endPoll
     @robot.respond /bet ([0-2]*) ([0-9]*)/i, this.vote
     @robot.respond /show previous bets/i, this.showPreviousPoll
