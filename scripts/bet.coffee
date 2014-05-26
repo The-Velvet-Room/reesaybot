@@ -18,37 +18,25 @@ totalPot = {}
 startingPoints = 1000
 betLocked = false
 
-awardPoints = (msg, username, pts) ->
-    points[username] ?= 0
-    points[username] += parseInt(pts)
-    msg.send pts + ' awarded to ' + username
-    save(robot)
-
-removePoints = (msg, username, pts) ->
-	points[username] -= parseInt(pts)
-    msg.send pts + ' points taken away from ' + username
-    if points[username] <= 0
-    	msg.send username + ' has gone bankrupt! Receiving a small bailout of 50.'
-     	points[username] = 50
-    save(robot)
-
-save = (robot) ->
-    robot.brain.data.points = points
-
 module.exports = (robot) ->
-    robot.brain.on 'loaded', ->
+  robot.brain.on 'loaded', ->
         points = robot.brain.data.points or {}
+	
+  new Poll(robot)
 
-    robot.respond /how many points does (.*?) have\??/i, (msg) ->
-        username = msg.match[1]
-        points[username] ?= startingPoints
-        msg.send username + ' has ' + points[username] + ' points'
+  robot.respond /how many points does (.*?) have\??/i, (msg) ->
+      username = msg.match[1]
+      points[username] ?= startingPoints
+      msg.send username + ' has ' + points[username] + ' points'
 
-    robot.respond /(.*?) points/i, (msg) ->
-        username = msg.match[1]
-        points[username] ?= startingPoints
-        msg.send username + ' has ' + points[username] + ' points'
+  robot.respond /(.*?) points/i, (msg) ->
+      username = msg.match[1]
+      points[username] ?= startingPoints
+      msg.send username + ' has ' + points[username] + ' points'
 
+  robot.respond /lock bet(s)/i, (msg) ->
+        betLocked = true
+        msg.send('Alright everyone! Bets are locked!')
        
 class Poll
 
@@ -165,9 +153,19 @@ class Poll
       @poll.betChoices[user.name] = number - 1
       msg.send "#{user.name} bet #{bet} on “#{votedAnswer.text}”" 
 
-module.exports = (robot) ->
-  new Poll(robot)
+awardPoints = (msg, username, pts) ->
+    points[username] ?= 0
+    points[username] += parseInt(pts)
+    save(robot)
+    msg.send(pts + ' awarded to ' + username)
 
-  robot.respond /lock bet(s)/i, (msg) ->
-        betLocked = true
-        msg.send('Alright everyone! Bets are locked!')
+removePoints = (msg, username, pts) ->
+  points[username] -= parseInt(pts)
+  save(robot)
+  msg.send(pts + ' points taken away from ' + username)
+  if points[username] <= 0
+    points[username] = 50
+    msg.send(username + ' has gone bankrupt! Receiving a small bailout of 50.')
+
+save = (robot) ->
+    robot.brain.data.points = points
