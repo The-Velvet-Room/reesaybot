@@ -73,6 +73,7 @@ class Poll
     betLocked = false
     @poll.victor = @poll.answers[victorIndex].text
 
+
     msg.send """Here are the results for “#{@poll.question}”:
     #{this.printResults(@poll)}
     Payouts will now be distributed.
@@ -81,7 +82,7 @@ class Poll
     for username in Object.keys(@poll.betChoices)
     	if @poll.betChoices[username] is victorIndex
     		payoutRatio = (@poll.bets[username] * 100) / (@poll.answers[victorIndex].totalPot)
-    		payout = (payoutRatio * @poll.answers[(victorIndex+1)%2]) / 100
+    		payout = (payoutRatio * @poll.answers[(victorIndex+1)%2].totalPot) / 100
     		awardPoints(msg, username, payout)
     	else
     		removePoints(msg, username, @poll.bets[username])
@@ -98,7 +99,7 @@ class Poll
 
   # Ansers management
   createAnswers: (answers) ->
-    { text: answer, votes: 0 } for answer in answers.split(/\s?,\s?/)
+    { text: answer, votes: 0, totalPot: 0 } for answer in answers.split(/\s?,\s?/)
 
   printAnswers: ->
     ("#{i+1}. #{answer.text}" for answer, i in @poll.answers).join("\n")
@@ -147,8 +148,6 @@ class Poll
     # Cast vote
     else
       votedAnswer = @poll.answers[number - 1]
-  	  if (!votedAnswer.totalPot)
-  	  	votedAnswer.totalPot = 0
       votedAnswer.votes++
       votedAnswer.totalPot += bet
       @poll.bet[user.name] = bet
