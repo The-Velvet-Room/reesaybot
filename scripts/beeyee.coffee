@@ -8,17 +8,10 @@
 #   None
 #
 # Commands:
-#   Triggered by Should I
+#   Bee Yee, BEEYEE
 # 
 # Author:
 #   Camtendo
-
-replys = [
-    "Yeah! Do it!"
-    "Of course you should!"
-    "Duh. Why wouldn't you?"
-    "Definitely Senpai!"
-]
 
 module.exports = (robot) ->
   robot.hear /bee yee/i, (msg) ->
