@@ -22,12 +22,12 @@ module.exports = (robot) ->
   new Poll robot 
 
   robot.respond /how many points does (.*?) have\??/i, (msg) ->
-      username = msg.match[1]
+      username = msg.match[1].toLowerCase()
       points[username] ?= startingPoints
       msg.send username + ' has ' + points[username] + ' points'
 
   robot.respond /(.*?) points/i, (msg) ->
-      username = msg.match[1]
+      username = msg.match[1].toLowerCase()
       points[username] ?= startingPoints
       msg.send username + ' has ' + points[username] + ' points'
 
@@ -120,11 +120,15 @@ class Poll
     number = parseInt(msg.match[1])
     bet = parseInt(msg.match[2])
     user = this.getUser(msg)
+    if(points[user.name] == undefined || points[user.name] == null)
+    	points[user.name] = startingPoints
 
     # Errors
     return msg.send('Sorry, there’s no pending bet at the moment.') unless @poll
     return msg.send('Sorry! Bets are currently locked!') if betLocked
+    return msg.send('Hey! You don\'t have that many points!') if bet > points[user.name]
     return msg.send("Invalid option! There are only #{@poll.answers.length} participants.") if number > @poll.answers.length
+    return msg.send("That\'s a negative number!") if bet < 0
 
     # User already voted
     if (userAnswer = @poll.voters[user.name]) != undefined
