@@ -15,7 +15,7 @@
 
 module.exports = (robot) ->
   robot.enter (msg) ->
-      msg.send "Hey everyone, I'm Rise Kujikawa!"
+      msg.send "#{msg.message.user.name} has joined the room!"
 
   robot.leave (msg) ->
-      msg.send "Shutting down!"
+      msg.send "#{msg.message.user.name} left us..."
