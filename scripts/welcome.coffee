@@ -14,5 +14,5 @@
 #   Camtendo
 
 module.exports = (robot) ->
-  robot.enter (response) ->
-      msg.send "Welcome, #{response.message.user.name}!"
+  robot.enter (msg) ->
+      msg.send "Welcome, #{msg.message.user.name}!"
