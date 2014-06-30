@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#   None. Listens for join messages.
+#   None. Listens for join and part messages.
 #
 # Author:
 #   Camtendo
@@ -16,9 +16,9 @@
 module.exports = (robot) ->
   robot.enter (msg) ->
   	  if msg.message.user.name.toLowerCase() isnt robot.name.toLowerCase()
-      	msg.send "Welcome to the channel, #{msg.message.user.name}!"
+      	msg.send "Welcome to the channel, #{msg.message.user.name}-Senpai!"
       else
-      	msg.send "I'm here! :D"
+      	msg.send "Heroku deployment successful."
 
   robot.leave (msg) ->
       msg.send "#{msg.message.user.name} left..."
