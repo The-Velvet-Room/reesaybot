@@ -23,6 +23,6 @@ module.exports = (robot) ->
   	  	.get() (err, res, body) ->
   	  		try
   	  			json = JSON.parse(body)
-  	  			msg.send "json.followers ="+json.followers
+  	  			msg.send "json.game ="+json.game
   	  		catch error
   	  			msg.send "Looks like the request failed Senpai. :("
