@@ -18,7 +18,12 @@ module.exports = (robot) ->
   	  if msg.message.user.name.toLowerCase() isnt robot.name.toLowerCase()
       	msg.send "Welcome to the channel, #{msg.message.user.name}-Senpai!"
       else
-      	msg.send "Heroku deployment successful."
+      	msg.send "Heroku deployment successful. Twitch Build Hash="+uniqueId(8)
 
   robot.leave (msg) ->
       msg.send "#{msg.message.user.name} left..."
+
+  uniqueId = (length=8) ->
+	  id = ""
+	  id += Math.random().toString(36).substr(2) while id.length < length
+	  id.substr 0, length
