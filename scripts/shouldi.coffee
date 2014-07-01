@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#   Triggered by Should I
+#   Should I (something) or (something else) - Encourages you to do stuff.
 # 
 # Author:
 #   Camtendo

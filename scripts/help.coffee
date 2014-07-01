@@ -65,7 +65,7 @@ module.exports = (robot) ->
 
     msg.send emit
 
-  robot.router.get '/hubot/help', (req, res) ->
+  robot.router.get '/', (req, res) ->
     cmds = robot.helpCommands()
     emit = "<p>#{cmds.join '</p><p>'}</p>"
 

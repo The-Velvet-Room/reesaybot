@@ -9,12 +9,12 @@
 #   TWITCH_ACCESS_TOKEN
 #
 # Commands:
-#   my viewers
-#   current viewers for <channel>
-#   my followers
-#   status=<status>
-#   game=<game>
-#   who is streaming?
+#   my viewers - Displays viewer count for whoever says this command
+#   current viewers for <channel> - Shows viewer count for <channel>
+#   my followers - Gives information about followers for the invoking user
+#   status=YOUR_STATUS - Sets status for user. Requires TWITCH_ACCESS_TOKEN to be set.
+#   game=YOUR_GAME - Sets game for user. Requires TWITCH_ACCESS_TOKEN to be set.
+#   who is streaming? - Returns info for streams that are online. Requires TWITCH_ACCESS_TOKEN to be set.
 #
 # Author:
 #   Camtendo

@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#   None. Listens for join and part messages.
+#   Reesaybot will listen for joins and parts and report them.
 #
 # Author:
 #   Camtendo

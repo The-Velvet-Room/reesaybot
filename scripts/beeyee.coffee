@@ -8,7 +8,8 @@
 #   None
 #
 # Commands:
-#   Bee Yee, BEEYEE
+#   Bee Yee - Aaaaaaaaooooooooooowwwwwwwww
+#   beeyee - BEE YEE!
 # 
 # Author:
 #   Camtendo

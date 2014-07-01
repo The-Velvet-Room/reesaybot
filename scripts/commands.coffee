@@ -8,11 +8,11 @@
 #   None
 #
 # Commands:
-#   <commands>
+#   commands - Lists url to view all commands
 #
 # Author:
 #   Camtendo
 
 module.exports = (robot) ->
     robot.hear /commands/i, (msg) ->
-        msg.send "You can view ALL of my commands/cues here: https://github.com/Camtendo/reesaybot/tree/master/scripts I hope you can read CoffeeScript, Senpai!"
+        msg.send "You can view ALL of my commands/cues here: http://reesaybot.herokuapp.com/"
