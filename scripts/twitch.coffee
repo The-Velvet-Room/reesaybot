@@ -26,12 +26,6 @@ accessToken = process.env.TWITCH_ACCESS_TOKEN
 
 module.exports = (robot) ->
   robot.hear /who is streaming?/i, (msg) ->
-    name = msg.message.user.name
-    status = msg.match[1].substr(msg.match[1].indexOf("=") + 1) 
-    data = {"channel": {"status": status}}
-    stringQuery = JSON.stringify(data)
-    contentLength = stringQuery.length
-
     msg.http(twitchApi+"/streams/followed")
         .headers('Accept': 'application/vnd.twitchtv.v2+json', 'Client-Id': clientId, 'Authorization': 'OAuth '+accessToken, 'Scope': 'user_read')
         .get(stringQuery) (err, res, body) ->
