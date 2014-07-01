@@ -28,7 +28,7 @@ module.exports = (robot) ->
   robot.hear /who is streaming?/i, (msg) ->
     msg.http(twitchApi+"/streams/followed")
         .headers('Accept': 'application/vnd.twitchtv.v2+json', 'Client-Id': clientId, 'Authorization': 'OAuth '+accessToken, 'Scope': 'user_read')
-        .get(stringQuery) (err, res, body) ->
+        .get() (err, res, body) ->
           try
             json = JSON.parse(body)
             streams = json.streams
