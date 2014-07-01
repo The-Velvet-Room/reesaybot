@@ -33,12 +33,10 @@ module.exports = (robot) ->
 
 
   robot.hear /game=(.*)?/i, (msg) ->
-  	name = msg.message.user.name
-  	game = msg.match[1].substr(msg.match[1].indexOf("=") + 1)
-    query = {
-      "channel": {"game": game}
-    }
-    stringQuery = JSON.stringify(query)
+    name = msg.message.user.name
+    game = msg.match[1].substr(msg.match[1].indexOf("=") + 1) 
+    data = {"channel": {"game": game}}
+    stringQuery = JSON.stringify(data)
     contentLength = stringQuery.length
   	msg.http(twitchApi+"/channels/"+name+"/")
   	  	.headers('Accept': 'application/vnd.twitchtv.v2+json', 'Client-Id': clientId, 'Authorization': 'OAuth '+accessToken, 'Scope': 'channel_editor', 'Content-Length': contentLength)
