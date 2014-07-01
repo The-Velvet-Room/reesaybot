@@ -6,7 +6,7 @@
 #
 # Configuration:
 #   TWITCH_CLIENT_ID
-#	TWITCH_ACCESS_TOKEN
+#	  TWITCH_ACCESS_TOKEN
 #
 # Commands:
 #   None.
@@ -36,11 +36,10 @@ module.exports = (robot) ->
   	name = msg.message.user.name
   	game = msg.match[1].substr(msg.match[1].indexOf("=") + 1)
   	msg.http(twitchApi+"/channels/"+name+"?channel[game]="+game)
-  	  	.headers(Accept: 'application/vnd.twitchtv.v2+json', 'Client-Id': clientId, 'Authorization': 'OAuth '+accessToken, 'scope': 'channel_editor')
+  	  	.headers('Accept': 'application/vnd.twitchtv.v2+json', 'Client-Id': clientId, 'Authorization': 'OAuth '+accessToken, 'Scope': 'channel_editor')
   	  	.put() (err, res, body) ->
   	  		try
   	  			json = JSON.parse(body)
   	  			msg.send('Okay '+name+'-Senpai! Your current game is now '+game+'!')
   	  		catch error
-  	  			msg.send "Looks like the request failed Senpai."
-  	  			throw error
+  	  			msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
