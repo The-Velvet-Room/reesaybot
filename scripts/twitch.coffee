@@ -36,7 +36,7 @@ module.exports = (robot) ->
   	name = msg.message.user.name
   	game = msg.match[1]
   	msg.http(twitchApi+"/channels/"+name+"?channel[game]="+game)
-  	  	.headers(Accept: 'application/vnd.twitchtv.v2+json', 'Client-Id': clientId, Authorization: 'OAuth '+accessToken)
+  	  	.headers(Accept: 'application/vnd.twitchtv.v2+json', 'Client-Id': clientId, 'Authorization': 'OAuth '+accessToken, 'scope': 'channel_editor')
   	  	.put() (err, res, body) ->
   	  		try
   	  			json = JSON.parse(body)
