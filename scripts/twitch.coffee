@@ -44,6 +44,7 @@ module.exports = (robot) ->
         .put(stringQuery) (err, res, body) ->
           try
             json = JSON.parse(body)
+            msg.send("body = "+body+" res="+res)
             msg.send('Okay '+name+'-Senpai! Your current game is now '+json.game+'!')
           catch error
             msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
