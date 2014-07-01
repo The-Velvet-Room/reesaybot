@@ -16,7 +16,7 @@ helpContents = (name, commands) ->
   """
 <html>
   <head>
-  <title>#{name} Help</title>
+  <title>ReesayBot Commands</title>
   <style type="text/css">
     body {
       background: #d3d6d9;
@@ -42,7 +42,8 @@ helpContents = (name, commands) ->
   </style>
   </head>
   <body>
-    <h1>#{name} Help</h1>
+    <center><h1>ReesayBot Commands</h1></center>
+    <center><img src="https://camo.githubusercontent.com/fc6998de886de1ffb8e334a0319d8417bb9118e1/687474703a2f2f736567612d616464696374732e636f6d2f77702d636f6e74656e742f75706c6f6164732f323031342f30342f32303134303431362d3139353930395f323130353132382d726973655f6b756a696b6177612e6a7067" height=144 width=256 alt="Rise Kujikawa"></center>
     <div class="commands">
       #{commands}
     </div>
@@ -52,18 +53,7 @@ helpContents = (name, commands) ->
 
 module.exports = (robot) ->
   robot.respond /help\s*(.*)?$/i, (msg) ->
-    cmds = robot.helpCommands()
-
-    if msg.match[1]
-      cmds = cmds.filter (cmd) ->
-        cmd.match new RegExp(msg.match[1], 'i')
-
-    emit = cmds.join "\n"
-
-    unless robot.name.toLowerCase() is 'hubot'
-      emit = emit.replace /hubot/ig, robot.name
-
-    msg.send emit
+    msg.send("Try saying <commands> instead.")
 
   robot.router.get '/', (req, res) ->
     cmds = robot.helpCommands()
