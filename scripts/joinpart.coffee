@@ -14,12 +14,11 @@
 #   Camtendo
 
 module.exports = (robot) ->
-  commandCount = robot.commands.length
   robot.enter (msg) ->
   	  if msg.message.user.name.toLowerCase() isnt robot.name.toLowerCase()
       	msg.send "Welcome to the channel, #{msg.message.user.name}-Senpai!"
       else
-      	msg.send "Heroku deployment successful."+commandCount+" commands were loaded. Twitch Build Hash = "+uniqueId(16)
+      	msg.send "Heroku deployment successful."+msg.robot.commands.length+" commands were loaded. Twitch Build Hash = "+uniqueId(16)
 
   robot.leave (msg) ->
       msg.send "#{msg.message.user.name} left..."
