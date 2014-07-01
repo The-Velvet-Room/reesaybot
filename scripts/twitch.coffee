@@ -38,12 +38,12 @@ module.exports = (robot) ->
     data = {"channel": {"game": game}}
     stringQuery = JSON.stringify(data)
     contentLength = stringQuery.length
-    
+
     msg.http(twitchApi+"/channels/"+name+"/")
         .headers('Accept': 'application/vnd.twitchtv.v2+json', 'Client-Id': clientId, 'Authorization': 'OAuth '+accessToken, 'Scope': 'channel_editor', 'Content-Length': contentLength)
         .put(stringQuery) (err, res, body) ->
           try
             json = JSON.parse(body)
-            msg.send('Okay '+name+'-Senpai! Your current game is now '+game+'!')
+            msg.send('Okay '+name+'-Senpai! Your current game is now '+json.game+'!')
           catch error
             msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
