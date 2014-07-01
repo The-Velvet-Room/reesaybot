@@ -44,7 +44,22 @@ module.exports = (robot) ->
         .put(stringQuery) (err, res, body) ->
           try
             json = JSON.parse(body)
-            msg.send("name= "+name+"body = "+body+" res="+res)
             msg.send('Okay '+name+'-Senpai! Your current game is now '+json.game+'!')
+          catch error
+            msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
+
+  robot.hear /status=(.*)?/i, (msg) ->
+    name = msg.message.user.name
+    status = msg.match[1].substr(msg.match[1].indexOf("=") + 1) 
+    data = {"channel": {"status": status}}
+    stringQuery = JSON.stringify(data)
+    contentLength = stringQuery.length
+
+    msg.http(twitchApi+"/channels/"+name+"?channel[status]="+status)
+        .headers('Accept': 'application/vnd.twitchtv.v2+json', 'Client-Id': clientId, 'Authorization': 'OAuth '+accessToken, 'Scope': 'channel_editor', 'Content-Length': contentLength)
+        .put(stringQuery) (err, res, body) ->
+          try
+            json = JSON.parse(body)
+            msg.send('Okay '+name+'-Senpai! Your current status is now '+json.status+'!')
           catch error
             msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
