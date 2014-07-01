@@ -20,6 +20,21 @@ accessToken = process.env.TWITCH_ACCESS_TOKEN
 
 
 module.exports = (robot) ->
+  robot.hear /my viewers/i, (msg) ->
+      name = msg.message.user.name
+      msg.http(twitchApi+"/streams/"+name)
+        .headers(Accept: 'application/vnd.twitchtv.v2+json', 'Client-Id': clientId)
+        .get() (err, res, body) ->
+          try
+            json = JSON.parse(body)
+            stream = json.stream
+            if stream
+              msg.send(""+name+"-Senpai, you currently have "+json.stream.viewers+" viewers.")
+            else
+              msg.send(""+name+", you are currently offline. :/")
+          catch error
+            msg.send "Looks like the request failed Senpai. error="+error+" body="+body+" name="+name
+
   robot.hear /current viewers for (.*)/i, (msg) ->
       name = msg.match[1].substr(msg.match[1].indexOf("for ") + 1) 
       msg.http(twitchApi+"/streams/"+name)
