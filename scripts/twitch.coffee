@@ -1,5 +1,5 @@
 # Description:
-#   Uses the Twitch api to do stuff
+#   Uses the Twitch API to do stuff
 #
 # Dependencies:
 #   None
@@ -35,9 +35,10 @@ module.exports = (robot) ->
             if streams
               msg.send("The following streams are online:")
               for stream in streams then do (stream) =>
-                msg.send(""+stream.channel.display_name+" is streaming "+stream.game+" and has "+stream.viewers+" viewers.")
+                msg.send(""+stream.channel.display_name+" is streaming "+stream.game+" and has "+stream.viewers+" viewers. http://twitch.tv/"+stream.channel.name)
+              msg.send("And I think that's it. I hope I helped, Senpai!")
             else
-              msg.send("Sorry senpai, nobody is currently streaming")
+              msg.send("Sorry Senpai, nobody is currently streaming!")
           catch error
             msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
 
