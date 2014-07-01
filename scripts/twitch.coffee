@@ -35,6 +35,7 @@ module.exports = (robot) ->
   robot.hear /game=(.*)?/i, (msg) ->
   	name = msg.message.user.name
   	game = msg.match[1]
+  	msg.send('game = '+game)
   	msg.http(twitchApi+"/channels/"+name+"?channel[game]="+game)
   	  	.headers(Accept: 'application/vnd.twitchtv.v2+json', 'Client-Id': clientId, 'Authorization': 'OAuth '+accessToken, 'scope': 'channel_editor')
   	  	.put() (err, res, body) ->
@@ -42,4 +43,4 @@ module.exports = (robot) ->
   	  			json = JSON.parse(body)
   	  			msg.send('Okay '+name+'-Senpai! Your current game is now '+game+'!')
   	  		catch error
-  	  			msg.send "Looks like the request failed Senpai. :("
+  	  			msg.send "Looks like the request failed Senpai. Here's the stack trace: "+error
