@@ -29,7 +29,7 @@ module.exports = (robot) ->
             json = JSON.parse(body)
             stream = json.stream
             if stream
-              msg.send(""+name+" currently has "+json.viewers+" viewers.")
+              msg.send(""+name+" currently has "+json.stream.viewers+" viewers.")
             else
               msg.send(""+name+" is currently offline.")
           catch error
