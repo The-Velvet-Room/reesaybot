@@ -9,7 +9,12 @@
 #   TWITCH_ACCESS_TOKEN
 #
 # Commands:
-#   None.
+#   my viewers
+#   current viewers for <channel>
+#   my followers
+#   status=<status>
+#   game=<game>
+#   who is streaming?
 #
 # Author:
 #   Camtendo
@@ -20,6 +25,28 @@ accessToken = process.env.TWITCH_ACCESS_TOKEN
 
 
 module.exports = (robot) ->
+  robot.hear /who is streaming?/i, (msg) ->
+    name = msg.message.user.name
+    status = msg.match[1].substr(msg.match[1].indexOf("=") + 1) 
+    data = {"channel": {"status": status}}
+    stringQuery = JSON.stringify(data)
+    contentLength = stringQuery.length
+
+    msg.http(twitchApi+"/streams/followed")
+        .headers('Accept': 'application/vnd.twitchtv.v2+json', 'Client-Id': clientId, 'Authorization': 'OAuth '+accessToken, 'Scope': 'user_read')
+        .get(stringQuery) (err, res, body) ->
+          try
+            json = JSON.parse(body)
+            streams = json.streams
+            if streams
+              msg.send("The following streams are online:")
+              for stream in streams then do (stream) =>
+                msg.send(""+stream.channel.display_name+" is streaming "+stream.game+" and has "+stream.viewers+" viewers.")
+            else
+              msg.send("Sorry senpai, nobody is currently streaming")
+          catch error
+            msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
+
   robot.hear /my viewers/i, (msg) ->
       name = msg.message.user.name
       msg.http(twitchApi+"/streams/"+name)
@@ -50,7 +77,7 @@ module.exports = (robot) ->
           catch error
             msg.send "Looks like the request failed Senpai. error="+error+" body="+body+" name="+name
 
-  robot.hear /twitch followers/i, (msg) ->
+  robot.hear /my followers/i, (msg) ->
       name = msg.message.user.name
       msg.http(twitchApi+"/channels/"+name+"/follows")
         .headers(Accept: 'application/vnd.twitchtv.v2+json', 'Client-Id': clientId)
