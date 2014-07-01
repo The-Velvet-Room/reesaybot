@@ -24,7 +24,6 @@ module.exports = (robot) ->
   	  	.get() (err, res, body) ->
   	  		try
   	  			json = JSON.parse(body)
-  	  			for key, value of json
-  					msg.send "#{key} and #{value}"
+                msg.send name+", your followers are "+json.follows[0].user.name
   	  		catch error
-  	  			msg.send "Looks like the request failed Senpai. :("
+  	  			msg.send "Looks like the request failed Senpai. :("78
