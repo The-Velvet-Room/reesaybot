@@ -110,8 +110,8 @@ module.exports = (robot) ->
     odds = "1 to "+(@poll.answers[1].totalPot) / (@poll.answers[0].totalPot) if @poll.answers[1].totalPot > @poll.answers[0].totalPot
     leftSide = ""+@poll.answers[0].text+" - "+@poll.answers[0].totalPot
     rightSide = ""+@poll.answers[1].text+" - "+@poll.answers[1].totalPot
-    leftBets = Array()
-    rightBets = Array()
+    leftBets = ["t","t2","t3"]
+    rightBets = []
     for name in @poll.betChoices
       bet = @poll.bets[name]
       risk = ""+(100*bet/points[name])+"%"
