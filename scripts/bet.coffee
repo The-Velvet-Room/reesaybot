@@ -141,6 +141,18 @@ module.exports = (robot) ->
       points[username] ?= startingPoints
       msg.send username + ' has ' + points[username] + ' points'
 
+  robot.hear /(.*?) set points (.?)/i, (msg) ->
+      return msg.send("Sorry, you don't have permissions to override points, #{msg.message.user.name}-Senpai.") if msg.message.user.name != "camtendo"
+      username = msg.match[1].toLowerCase()
+      newPoints = msg.match[2]
+      removePoints(msg, username, (points[username]-50))
+      awardPoints(msg, username, newPoints)
+
+  robot.hear /my points/i, (msg) ->
+      username = msg.message.user.name.toLowerCase()
+      points[username] ?= startingPoints
+      msg.send username+'-Senpai, you' + ' have ' + points[username] + ' points'
+
   robot.respond /lock bet(s)/i, (msg) ->
         betLocked = true
         msg.send('Alright everyone! Bets are locked! View bets here: http://reesaybot.herokuapp.com/points/current-bet')
