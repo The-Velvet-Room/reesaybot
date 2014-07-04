@@ -145,6 +145,7 @@ module.exports = (robot) ->
       return msg.send("Sorry, you don't have permissions to override points, #{msg.message.user.name}-Senpai.") if msg.message.user.name != "camtendo"
       username = msg.match[1].toLowerCase()
       newPoints = msg.message.text.substr(msg.message.text.indexOf("points ") + 1) 
+      msg.send("newPoints="+newPoints)
       removePoints(msg, username, (points[username]))
       awardPoints(msg, username, newPoints-50)
 
