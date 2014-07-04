@@ -14,5 +14,5 @@
 #   Camtendo
 
 module.exports = (robot) ->
-    robot.hear /commands/i, (msg) ->
+    robot.hear /commands$/i, (msg) ->
         msg.send "You can view ALL of my commands/cues here: http://reesaybot.herokuapp.com/"
