@@ -83,7 +83,7 @@ class Poll
     for username in Object.keys(@poll.betChoices)
     	if @poll.betChoices[username] is victorIndex
     		payoutRatio = (@poll.bets[username] * 100) / (@poll.answers[victorIndex].totalPot)
-    		payout = (payoutRatio * @poll.answers[(victorIndex+1)%2].totalPot) / 100
+    		payout = (payoutRatio * @poll.answers[(victorIndex+1)%%2].totalPot) / 100
     		awardPoints(msg, username, payout)
     	else
     		removePoints(msg, username, @poll.bets[username])
