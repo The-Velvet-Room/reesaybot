@@ -35,24 +35,17 @@ leaderboardContents = (name, points) ->
       margin: 8px 0;
       padding: 0;
     }
-    .commands {
+    .points {
       font-size: 13px;
-    }
-    p {
-      border-bottom: 1px solid #eee;
-      margin: 6px 0 0 0;
-      padding-bottom: 5px;
-    }
-    p:last-child {
-      border: 0;
     }
   </style>
   </head>
   <body>
-    <center><h1>Points Leaderboard</h1></center>
-    <div class="commands">
+    <center><h1>Points</h1></center>
+    <table class="points">
+      <tr><th>Name</th><th>Points</th></tr>
       #{points}
-    </div>
+    </table>
   </body>
 </html>
   """
@@ -64,14 +57,8 @@ module.exports = (robot) ->
     res.setHeader 'content-type', 'text/html'
     html = ''
     for name, num of points
-      html += "<p> #{name} - #{num} </p>"
+      html += "<tr> <td>#{name}</td><td>#{num}</td> </tr>"
     res.end leaderboardContents robot.name, html
-
-  robot.hear /html/i, (msg) ->
-    html = ''
-    for name, num of points
-      html += "<p> #{name} - #{num} </p>"
-    msg.send('html ='+html+" points="+points)
 
   robot.respond /how many points does (.*?) have\??/i, (msg) ->
       username = msg.match[1].toLowerCase()
