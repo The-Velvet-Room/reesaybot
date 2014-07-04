@@ -22,7 +22,7 @@
     "jsdom": "0.2.14",
     "cleverbot-node": "0.1.1",
     "flip": "~0.1.0",
-    "aws2js": "0.7.10"
+    "mongodb": "*"
   },
   "engines": {
     "node": "0.6.x",
