@@ -37,15 +37,18 @@ leaderboardContents = (name, points) ->
     }
     .points {
       font-size: 13px;
+      border-style: dashed;
+      text-align: left;
+      border-spacing: 10px;
     }
   </style>
   </head>
   <body>
     <center><h1>Points</h1></center>
-    <table class="points">
+    <center><table class="points">
       <tr><th>Name</th><th>Points</th></tr>
       #{points}
-    </table>
+    </table></center>
   </body>
 </html>
   """
