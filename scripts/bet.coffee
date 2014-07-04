@@ -63,7 +63,7 @@ module.exports = (robot) ->
 
   robot.router.get '/points/leaderboard', (req, res) ->
     res.setHeader 'content-type', 'text/html'
-    res.end helpContents robot.name, points
+    res.end leaderboardContents robot.name, points
 
   robot.respond /how many points does (.*?) have\??/i, (msg) ->
       username = msg.match[1].toLowerCase()
