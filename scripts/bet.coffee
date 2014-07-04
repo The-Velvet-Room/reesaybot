@@ -62,8 +62,10 @@ module.exports = (robot) ->
 
   robot.router.get '/points/leaderboard', (req, res) ->
     res.setHeader 'content-type', 'text/html'
-    emit = "<p>#{points.join '</p><p>'}</p>"
-    res.end leaderboardContents robot.name, emit
+    html = ''
+    for name, num in points
+      html += "<p>"+name+" "+points+"</p>"
+    res.end leaderboardContents robot.name, html
 
   robot.respond /how many points does (.*?) have\??/i, (msg) ->
       username = msg.match[1].toLowerCase()
