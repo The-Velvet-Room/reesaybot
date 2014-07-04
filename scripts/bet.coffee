@@ -98,9 +98,9 @@ class Poll
     #{this.printResults(@previousPoll)}
     """
 
-  # Ansers management
+  # Bet management
   createAnswers: (answers) ->
-    { text: answer, votes: 0, totalPot: 0 } for answer in answers.split(/\s?,\s?/)
+    { text: answer, votes: 0, totalPot: 10 } for answer in answers.split(/\s?,\s?/)
 
   printAnswers: ->
     ("#{i+1}. #{answer.text}" for answer, i in @poll.answers).join("\n")
