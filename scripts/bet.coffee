@@ -115,7 +115,7 @@ module.exports = (robot) ->
     for name in @poll.betChoices
       bet = @poll.bets[name]
       risk = ""+(100*bet/points[name])+"%"
-      leftBets.push name
+      leftBets = (num for num in [10..1])
       leftBets.push "Reversed refs" if name == 0
       leftBets.push "Reversed refs" if name == 1
       leftBets.push "wtf" if name == "camtendo"
