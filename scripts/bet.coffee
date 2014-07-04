@@ -106,15 +106,15 @@ module.exports = (robot) ->
     res.setHeader 'content-type', 'text/html'
     @poll = poll
     votersCount = Object.keys(@poll.voters).length
-    odds = ""+(@poll.answers[0].totalPot) / (@poll.answers[1].totalPot)+" to 1"
-    odds = "1 to "+(@poll.answers[1].totalPot) / (@poll.answers[0].totalPot) if @poll.answers[1].totalPot > @poll.answers[0].totalPot
+    odds = ""+(((@poll.answers[0].totalPot) / (@poll.answers[1].totalPot)).toFixed 4)+" to 1"
+    odds = "1 to "+(((@poll.answers[1].totalPot) / (@poll.answers[0].totalPot)).toFixed 4) if @poll.answers[1].totalPot > @poll.answers[0].totalPot
     leftSide = ""+@poll.answers[0].text+" - "+@poll.answers[0].totalPot
     rightSide = ""+@poll.answers[1].text+" - "+@poll.answers[1].totalPot
     leftBets = []
     rightBets = []
     for name, thing of @poll.betChoices
       bet = @poll.bets[name]
-      risk = ""+(100*bet/points[name])+"%"
+      risk = ""+((100*bet/points[name]).toFixed 2)+"%"
       leftBets.push "#{name} - #{bet} (#{risk})" if @poll.betChoices[name] == 0
       rightBets.push "#{name} - #{bet} (#{risk})" if @poll.betChoices[name] == 1
     tableSize = leftBets.length
