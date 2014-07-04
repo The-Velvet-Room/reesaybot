@@ -18,6 +18,7 @@ totalPot = {}
 startingPoints = 100
 betLocked = false
 leaderboardUrl = 'http://reesaybot.herokuapp.com/points/leaderboard'
+currentBetUrl = 'http://reesaybot.herokuapp.com/points/current-bet'
 
 leaderboardContents = (name, points) ->
 
@@ -54,6 +55,42 @@ leaderboardContents = (name, points) ->
 </html>
   """
 
+currentBetContents = (totalBets, leftBetChoice, rightBetChoice, odds, table) ->
+
+  """
+<html>
+  <head>
+  <title>Current Bet</title>
+  <style type="text/css">
+    body {
+      background: #d3d6d9;
+      color: #636c75;
+      text-shadow: 0 1px 1px rgba(255, 255, 255, .5);
+      font-family: Helvetica, Arial, sans-serif;
+    }
+    h1 {
+      margin: 8px 0;
+      padding: 0;
+    }
+    .points {
+      font-size: 13px;
+      border-style: dashed;
+      text-align: left;
+      border-spacing: 10px;
+    }
+  </style>
+  </head>
+  <body>
+    <center><h1>Total Bets: #{totalBets}</h1></center>
+    <center><h1>Odds: #{odds}</h1></center>
+    <center><table class="points">
+      <tr><th>#{leftBetChoice}</th><th>#{rightBetChoice}</th></tr>
+      #{table}
+    </table></center>
+  </body>
+</html>
+  """
+
 module.exports = (robot) ->	
   new Poll robot 
 
@@ -79,7 +116,12 @@ module.exports = (robot) ->
 
   robot.respond /lock bet(s)/i, (msg) ->
         betLocked = true
-        msg.send('Alright everyone! Bets are locked!')
+        msg.send('Alright everyone! Bets are locked! View bets here: #{currentBetUrl}')
+
+  uniqueId = (length=8) ->
+    id = ""
+    id += Math.random().toString(36).substr(2) while id.length < length
+    id.substr 0, length
        
 class Poll
 
@@ -101,7 +143,7 @@ class Poll
 
   # Poll management
   createPoll: (msg) =>
-    return msg.send("Sorry, you don't have permissions to make a bet, #{msg.message.user.name}-Senpai.") if msg.message.user.name != "camtendo"
+    return msg.send("Sorry, you don't have permissions to start a bet, #{msg.message.user.name}-Senpai.") if msg.message.user.name != "camtendo"
     answers = this.createAnswers(msg.match[2])
     return msg.send('Please provide 2 participants!') if answers.length != 2
 
@@ -228,3 +270,28 @@ removePoints = (msg, username, pts) ->
   if points[username] <= 0
     points[username] = 50
     msg.send(username + ' has gone bankrupt! Receiving a small bailout of 50.')
+
+robot.router.get '/points/current-bet', (req, res) ->
+    res.setHeader 'content-type', 'text/html'
+    votersCount = Object.keys(@poll.voters).length
+    odds = ""+(@poll.answers[0].totalPot) / (@poll.answers[1].totalPot)+" to 1"
+    odds = "1 to "+(@poll.answers[1].totalPot) / (@poll.answers[0].totalPot) if @poll.answers[1].totalPot > @poll.answers[0].totalPot
+    leftSide = ""+@poll.answers[0].text+" - "+@poll.answers[0].totalPot
+    rightSide = ""+@poll.answers[1].text+" - "+@poll.answers[1].totalPot
+    leftBets = []
+    rightBets = []
+    for name in @poll.betChoices
+      bet = @poll.bets[name]
+      risk = ""+(100*bet/points[name])+"%"
+      leftBets.push("#{name} - #{bet} (#{risk})") if @poll.betChoices[name] == 0
+      rightBets.push("#{name} - #{bet} (#{risk})") if @poll.betChoices[name] == 1
+    tableSize = leftBets.length
+    tableSize = rightBets.length if rightBets.length > leftBets.length
+    table = ''
+    for i in tableSize
+      leftCell = "<td></td>"
+      leftCell = "<td>#{leftBets[i]}</td>" if leftBets[i]
+      rightCell = "<td></td>"
+      rightCell = "<td>#{rightBets[i]}</td>" if rightBets[i]
+      table += "<tr>#{leftCell}#{rightCell}</tr>"
+    res.end currentBetContents votersCount, leftSide, rightSide, odds, table
