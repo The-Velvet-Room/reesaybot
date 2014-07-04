@@ -15,6 +15,7 @@
 
 points = {}
 totalPot = {}
+poll = null
 startingPoints = 100
 betLocked = false
 leaderboardUrl = 'http://reesaybot.herokuapp.com/points/leaderboard'
@@ -103,6 +104,7 @@ module.exports = (robot) ->
 
   robot.router.get '/points/current-bet', (req, res) ->
     res.setHeader 'content-type', 'text/html'
+    @poll = poll
     votersCount = Object.keys(@poll.voters).length
     odds = ""+(@poll.answers[0].totalPot) / (@poll.answers[1].totalPot)+" to 1"
     odds = "1 to "+(@poll.answers[1].totalPot) / (@poll.answers[0].totalPot) if @poll.answers[1].totalPot > @poll.answers[0].totalPot
@@ -141,7 +143,7 @@ module.exports = (robot) ->
 
   robot.respond /lock bet(s)/i, (msg) ->
         betLocked = true
-        msg.send('Alright everyone! Bets are locked! View bets here: #{currentBetUrl}')
+        msg.send('Alright everyone! Bets are locked! View bets here: http://reesaybot.herokuapp.com/points/current-bet')
 
   uniqueId = (length=8) ->
     id = ""
@@ -260,6 +262,7 @@ class Poll
     # Save user vote
     @poll.voters[user.name] = number
     votersCount = Object.keys(@poll.voters).length
+    poll = @poll
 
     # Cancel vote
     if number is 0
@@ -273,6 +276,7 @@ class Poll
       votedAnswer.totalPot += bet
       @poll.bets[user.name] = bet
       @poll.betChoices[user.name] = number - 1
+      poll = @poll
       msg.send("#{user.name} bet #{bet} on “#{votedAnswer.text}”") 
 
 awardPoints = (msg, username, pts) ->
