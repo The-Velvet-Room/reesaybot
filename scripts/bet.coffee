@@ -67,6 +67,12 @@ module.exports = (robot) ->
       html += "<p>"+name+" "+points+"</p>"
     res.end leaderboardContents robot.name, html
 
+  robot.hear /html/i, (msg) ->
+    html = ''
+    for name, num in points
+      html += "<p>"+name+" "+points+"</p>"
+      msg.say('html ='+html)
+
   robot.respond /how many points does (.*?) have\??/i, (msg) ->
       username = msg.match[1].toLowerCase()
       points[username] ?= startingPoints
