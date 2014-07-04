@@ -120,7 +120,7 @@ module.exports = (robot) ->
     tableSize = leftBets.length
     tableSize = rightBets.length if rightBets.length > leftBets.length
     table = ''
-    for i in tableSize
+    for i in [0..tableSize] by 1
       leftCell = "<td></td>"
       leftCell = "<td>#{leftBets[i]}</td>" if leftBets[i]
       rightCell = "<td></td>"
