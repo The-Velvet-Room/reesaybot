@@ -144,9 +144,9 @@ module.exports = (robot) ->
   robot.hear /(.*?) set points (.?)/i, (msg) ->
       return msg.send("Sorry, you don't have permissions to override points, #{msg.message.user.name}-Senpai.") if msg.message.user.name != "camtendo"
       username = msg.match[1].toLowerCase()
-      newPoints = msg.match[2]
-      removePoints(msg, username, (points[username]-50))
-      awardPoints(msg, username, newPoints)
+      newPoints = msg.message.substr(msg.message.indexOf("for ") + 1) 
+      removePoints(msg, username, (points[username]))
+      awardPoints(msg, username, newPoints-50)
 
   robot.hear /my points/i, (msg) ->
       username = msg.message.user.name.toLowerCase()
