@@ -98,8 +98,10 @@ module.exports = (robot) ->
   robot.router.get '/points/leaderboard', (req, res) ->
     res.setHeader 'content-type', 'text/html'
     html = ''
-    for name, num of points
-      html += "<tr> <td>#{name}</td><td>#{num}</td> </tr>"
+    keys = (k for k of points)
+    sortedKeys = keys.sort (a, b) -> points[b] - points[a]
+    for name of sortedKeys
+      html += "<tr> <td>#{name}</td><td>#{points[name]}</td> </tr>"
     res.end leaderboardContents robot.name, html
 
   robot.router.get '/points/current-bet', (req, res) ->
