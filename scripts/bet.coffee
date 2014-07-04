@@ -164,7 +164,7 @@ awardPoints = (msg, username, pts) ->
     	points[username] += parseInt(pts)
     	@robot.brain.data.points = points
     catch error
-    	msg.send("Whoopsie! I couldn't store the payouts in the DB! Don't worry, I'll use the fallback.")
+    	msg.send("Whoopsie! I couldn't store the payouts in the DB! Don't worry, I'll use the fallback. Error="+error)
     msg.send(pts + ' points awarded to ' + username)
 
 removePoints = (msg, username, pts) ->
@@ -173,7 +173,7 @@ removePoints = (msg, username, pts) ->
   	points[username] -= parseInt(pts)
   	@robot.brain.data.points = points
   catch error
-    	msg.send("Whoopsie! I couldn't store the payouts in the DB! Don't worry, I'll use the fallback.")	
+    	msg.send("Whoopsie! I couldn't store the payouts in the DB! Don't worry, I'll use the fallback. Error="+error)	
   msg.send(pts + ' points taken away from ' + username)
   if points[username] <= 0
     points[username] = 50
