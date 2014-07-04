@@ -101,6 +101,31 @@ module.exports = (robot) ->
       html += "<tr> <td>#{name}</td><td>#{num}</td> </tr>"
     res.end leaderboardContents robot.name, html
 
+  robot.router.get '/points/current-bet', (req, res) ->
+    res.setHeader 'content-type', 'text/html'
+    votersCount = Object.keys(@poll.voters).length
+    odds = ""+(@poll.answers[0].totalPot) / (@poll.answers[1].totalPot)+" to 1"
+    odds = "1 to "+(@poll.answers[1].totalPot) / (@poll.answers[0].totalPot) if @poll.answers[1].totalPot > @poll.answers[0].totalPot
+    leftSide = ""+@poll.answers[0].text+" - "+@poll.answers[0].totalPot
+    rightSide = ""+@poll.answers[1].text+" - "+@poll.answers[1].totalPot
+    leftBets = []
+    rightBets = []
+    for name in @poll.betChoices
+      bet = @poll.bets[name]
+      risk = ""+(100*bet/points[name])+"%"
+      leftBets.push("#{name} - #{bet} (#{risk})") if @poll.betChoices[name] == 0
+      rightBets.push("#{name} - #{bet} (#{risk})") if @poll.betChoices[name] == 1
+    tableSize = leftBets.length
+    tableSize = rightBets.length if rightBets.length > leftBets.length
+    table = ''
+    for i in tableSize
+      leftCell = "<td></td>"
+      leftCell = "<td>#{leftBets[i]}</td>" if leftBets[i]
+      rightCell = "<td></td>"
+      rightCell = "<td>#{rightBets[i]}</td>" if rightBets[i]
+      table += "<tr>#{leftCell}#{rightCell}</tr>"
+    res.end currentBetContents votersCount, leftSide, rightSide, odds, table
+
   robot.respond /leaderboard/i, (msg) ->
       msg.send leaderboardUrl
 
@@ -270,28 +295,3 @@ removePoints = (msg, username, pts) ->
   if points[username] <= 0
     points[username] = 50
     msg.send(username + ' has gone bankrupt! Receiving a small bailout of 50.')
-
-robot.router.get '/points/current-bet', (req, res) ->
-    res.setHeader 'content-type', 'text/html'
-    votersCount = Object.keys(@poll.voters).length
-    odds = ""+(@poll.answers[0].totalPot) / (@poll.answers[1].totalPot)+" to 1"
-    odds = "1 to "+(@poll.answers[1].totalPot) / (@poll.answers[0].totalPot) if @poll.answers[1].totalPot > @poll.answers[0].totalPot
-    leftSide = ""+@poll.answers[0].text+" - "+@poll.answers[0].totalPot
-    rightSide = ""+@poll.answers[1].text+" - "+@poll.answers[1].totalPot
-    leftBets = []
-    rightBets = []
-    for name in @poll.betChoices
-      bet = @poll.bets[name]
-      risk = ""+(100*bet/points[name])+"%"
-      leftBets.push("#{name} - #{bet} (#{risk})") if @poll.betChoices[name] == 0
-      rightBets.push("#{name} - #{bet} (#{risk})") if @poll.betChoices[name] == 1
-    tableSize = leftBets.length
-    tableSize = rightBets.length if rightBets.length > leftBets.length
-    table = ''
-    for i in tableSize
-      leftCell = "<td></td>"
-      leftCell = "<td>#{leftBets[i]}</td>" if leftBets[i]
-      rightCell = "<td></td>"
-      rightCell = "<td>#{rightBets[i]}</td>" if rightBets[i]
-      table += "<tr>#{leftCell}#{rightCell}</tr>"
-    res.end currentBetContents votersCount, leftSide, rightSide, odds, table
