@@ -201,8 +201,8 @@ class Poll
       if @poll.betChoices[username] is victorIndex
         payoutRatio = (@poll.bets[username]) / (@poll.answers[(victorIndex+1)%2].totalPot)
         payoutRatio = (@poll.bets[username]) / (@poll.answers[victorIndex].totalPot) if victorIndex is 0
-        payout = (payoutRatio * @poll.answers[victorIndex].totalPot)
-        payout = (payoutRatio * @poll.answers[(victorIndex+1)%2].totalPot) if victorIndex is 0
+        payout = (payoutRatio * @poll.answers[victorIndex].totalPot).toFixed 0
+        payout = (payoutRatio * @poll.answers[(victorIndex+1)%2].totalPot).toFixed 0 if victorIndex is 0
         awardPoints(msg, username, payout)
       else
         removePoints(msg, username, @poll.bets[username])
