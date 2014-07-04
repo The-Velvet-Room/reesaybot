@@ -49,8 +49,7 @@ leaderboardContents = (name, points) ->
   </style>
   </head>
   <body>
-    <center><h1>ReesayBot Commands</h1></center>
-    <center><img src="https://camo.githubusercontent.com/fc6998de886de1ffb8e334a0319d8417bb9118e1/687474703a2f2f736567612d616464696374732e636f6d2f77702d636f6e74656e742f75706c6f6164732f323031342f30342f32303134303431362d3139353930395f323130353132382d726973655f6b756a696b6177612e6a7067" height=144 width=256 alt="Rise Kujikawa"></center>
+    <center><h1>Points Leaderboard</h1></center>
     <div class="commands">
       #{points}
     </div>
@@ -63,7 +62,8 @@ module.exports = (robot) ->
 
   robot.router.get '/points/leaderboard', (req, res) ->
     res.setHeader 'content-type', 'text/html'
-    res.end leaderboardContents robot.name, points
+    emit = "<p>#{points.join '</p><p>'}</p>"
+    res.end leaderboardContents robot.name, emit
 
   robot.respond /how many points does (.*?) have\??/i, (msg) ->
       username = msg.match[1].toLowerCase()
