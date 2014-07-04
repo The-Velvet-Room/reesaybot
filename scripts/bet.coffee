@@ -64,13 +64,13 @@ module.exports = (robot) ->
     res.setHeader 'content-type', 'text/html'
     html = ''
     for name, num of points
-      html += "<p>"+name+" "+points+"</p>"
+      html += "<p> #{name} - #{points} </p>"
     res.end leaderboardContents robot.name, html
 
   robot.hear /html/i, (msg) ->
     html = ''
     for name, num of points
-      html += "<p>"+name+" "+points+"</p>"
+      html += "<p> #{name} - #{points} </p>"
     msg.send('html ='+html+" points="+points)
 
   robot.respond /how many points does (.*?) have\??/i, (msg) ->
