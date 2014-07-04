@@ -124,9 +124,9 @@ module.exports = (robot) ->
     tableSize = rightBets.length if rightBets.length > leftBets.length
     table = ''
     for i in [0..tableSize] by 1
-      leftCell = "<td></td>"
+      leftCell = "<td>Empty</td>"
       leftCell = "<td>#{leftBets[i]}</td>" if leftBets[i]
-      rightCell = "<td></td>"
+      rightCell = "<td>Empty</td>"
       rightCell = "<td>#{rightBets[i]}</td>" if rightBets[i]
       table += "<tr>#{leftCell}#{rightCell}</tr>"
     res.end currentBetContents votersCount, leftSide, rightSide, odds, table
