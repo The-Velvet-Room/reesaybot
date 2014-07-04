@@ -6,7 +6,12 @@ An implementation of Hubot and Hubot-IRC. Seeks to provide functions that aid Tw
 
 This bot does NOT aim to replace administrative/moderation bots like Moobot and Nightbot, so none of its functions will utilize commands requiring operator status in a channel. 
 
+Notable Features
+=========
+* Saltybet style betting
+* Interaction with the Twitch.tv API (Checking viewers, checking followers, changing game/status, etc.)
+
 TODO
 =========
-* Salty bet style feature where players can wager fake money on matches that Rise will maintain
 * SRL style Racebot features (start race, stop race, participants, race rating, etc.)
+* World Record fetching
