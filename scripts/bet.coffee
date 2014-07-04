@@ -112,7 +112,7 @@ module.exports = (robot) ->
     rightSide = ""+@poll.answers[1].text+" - "+@poll.answers[1].totalPot
     leftBets = ["t","t2","t3"]
     rightBets = []
-    for name, thing in @poll.betChoices
+    for name, thing of @poll.betChoices
       leftBets.push thing
       bet = @poll.bets[name]
       risk = ""+(100*bet/points[name])+"%"
