@@ -115,11 +115,11 @@ module.exports = (robot) ->
     for name in @poll.betChoices
       bet = @poll.bets[name]
       risk = ""+(100*bet/points[name])+"%"
-      leftBets.push("Reversed refs") if name == 0
-      leftBets.push("Reversed refs") if name == 1
-      leftBets.push("wtf") if name == "camtendo"
-      leftBets.push("#{name} - #{bet} (#{risk})") if @poll.betChoices[name] == 0
-      rightBets.push("#{name} - #{bet} (#{risk})") if @poll.betChoices[name] == 1
+      leftBets.push "Reversed refs" if name == 0
+      leftBets.push "Reversed refs" if name == 1
+      leftBets.push "wtf" if name == "camtendo"
+      leftBets.push "#{name} - #{bet} (#{risk})" if @poll.betChoices[name] == 0
+      rightBets.push "#{name} - #{bet} (#{risk})" if @poll.betChoices[name] == 1
     tableSize = leftBets.length
     tableSize = rightBets.length if rightBets.length > leftBets.length
     table = ''
