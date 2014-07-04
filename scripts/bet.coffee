@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#	None
+#	  hubot leaderboard - Request the leaderboard url.
 #	
 # Author:
 #   Camtendo
@@ -17,6 +17,7 @@ points = {}
 totalPot = {}
 startingPoints = 100
 betLocked = false
+leaderboardUrl = 'http://reesaybot.herokuapp.com/points/leaderboard'
 
 leaderboardContents = (name, points) ->
 
@@ -63,6 +64,9 @@ module.exports = (robot) ->
       html += "<tr> <td>#{name}</td><td>#{num}</td> </tr>"
     res.end leaderboardContents robot.name, html
 
+  robot.respond /leaderboard/i, (msg) ->
+      msg.send leaderboardUrl
+
   robot.respond /how many points does (.*?) have\??/i, (msg) ->
       username = msg.match[1].toLowerCase()
       points[username] ?= startingPoints
@@ -97,6 +101,7 @@ class Poll
 
   # Poll management
   createPoll: (msg) =>
+    return msg.send("Sorry, you don't have permissions to make a bet, #{msg.message.user.name}-Senpai.") if msg.message.user.name != "camtendo"
     answers = this.createAnswers(msg.match[2])
     return msg.send('Please provide 2 participants!') if answers.length != 2
 
@@ -120,6 +125,7 @@ class Poll
     msg.send """Here are the results for “#{@poll.question}”:
     #{this.printResults(@poll)}
     Payouts will now be distributed.
+    The leaderboard has been updated: #{leaderboardUrl}
     """
 
     for username in Object.keys(@poll.betChoices)
