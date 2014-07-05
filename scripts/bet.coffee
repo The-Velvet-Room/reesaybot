@@ -138,7 +138,7 @@ module.exports = (robot) ->
       points[username] ?= startingPoints
       msg.send username + ' has ' + points[username] + ' points'
 
-  robot.respond /(.*?) points/i, (msg) ->
+  robot.respond /(.*?) points$/i, (msg) ->
       username = msg.match[1].toLowerCase()
       points[username] ?= startingPoints
       msg.send username + ' has ' + points[username] + ' points'
@@ -150,7 +150,7 @@ module.exports = (robot) ->
       points[username] = 0
       awardPoints(msg, username, newPoints)
 
-  robot.hear /my points/i, (msg) ->
+  robot.hear /my points$/i, (msg) ->
       username = msg.message.user.name.toLowerCase()
       points[username] ?= startingPoints
       msg.send username+'-Senpai, you' + ' have ' + points[username] + ' points'
