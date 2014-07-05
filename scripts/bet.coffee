@@ -272,7 +272,7 @@ class Poll
     return msg.send('Sorry! Bets are currently locked!') if betLocked
     return msg.send('Hey! You don\'t have that many points!') if bet > points[user.name]
     return msg.send("Invalid option! There are only #{@poll.answers.length} participants.") if number > @poll.answers.length
-    return msg.send("That\'s a negative number!") if bet < 0
+    return msg.send("That\'s an invalid bet amount!") if bet <= 0
 
     # User already voted
     if (userAnswer = @poll.voters[user.name]) != undefined
