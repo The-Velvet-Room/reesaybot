@@ -303,13 +303,13 @@ class Poll
 
 awardPoints = (msg, username, pts) ->
     try
-    	points[username] ?= 0
-    	points[username] += parseInt(pts)
+      points[username] ?= 0
+      points[username] += parseInt(pts)
       highestPoints[username] = points[username] if points[username] > highestPoints[username]
-    	msg.robot.brain.data.points = points
+      msg.robot.brain.data.points = points
       msg.robot.brain.data.highestPoints = highestPoints
     catch error
-    	msg.send("Whoopsie! I couldn't store the payouts in the DB! Don't worry, I'll use the fallback. Error="+error)
+      msg.send("Whoopsie! I couldn't store the payouts in the DB! Don't worry, I'll use the fallback. Error="+error)
     msg.send(pts + ' points awarded to ' + username)
 
 removePoints = (msg, username, pts) ->
