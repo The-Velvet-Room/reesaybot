@@ -9,6 +9,10 @@
 #
 # Commands:
 #	  hubot leaderboard - Request the leaderboard url.
+#   my points - see your points
+#   (user) points - see (user's) points
+#   bet (choiceIndex) (amount) - bet a certain amount on the choice. Choice index is either 1 or 2
+#   hubot how many points does (user) have? - Shows user's points
 #	
 # Author:
 #   Camtendo
