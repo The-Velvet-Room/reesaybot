@@ -18,6 +18,7 @@
 #   Camtendo
 
 points = {}
+highestPoints = {}
 totalPot = {}
 poll = null
 startingPoints = 100
@@ -53,7 +54,7 @@ leaderboardContents = (name, points) ->
   <body>
     <center><h1>Points</h1></center>
     <center><table class="points">
-      <tr><th>Name</th><th>Points</th></tr>
+      <tr><th>Name</th><th>Points</th><th>Peak</th></tr>
       #{points}
     </table></center>
   </body>
@@ -105,7 +106,8 @@ module.exports = (robot) ->
     keys = Object.keys(points)
     sortedKeys = keys.sort (a, b) -> points[b] - points[a]
     for name in sortedKeys
-      html += "<tr> <td>#{name}</td><td>#{points[name]}</td> </tr>"
+      highestPoints[name] ?= points[name]
+      html += "<tr> <td>#{name}</td><td>#{points[name]}</td><td>highestPoints[nam]</td></tr>"
     res.end leaderboardContents robot.name, html
 
   robot.router.get '/points/current-bet', (req, res) ->
@@ -176,7 +178,9 @@ class Poll
 
     @robot.brain.on 'loaded', =>
       points = @robot.brain.data.points
+      highestPoints = @robot.brain.data.highestPoints
       points = {} unless points
+      highestPoints = {} unless highestPoints
 
     @robot.hear /start bet (.*) -p (.*)/i, this.createPoll
     @robot.respond /winner ([0-2])/i, this.endPoll
@@ -301,7 +305,9 @@ awardPoints = (msg, username, pts) ->
     try
     	points[username] ?= 0
     	points[username] += parseInt(pts)
+      highestPoints[username] = points[username] if points[username] > highestPoints[username]
     	msg.robot.brain.data.points = points
+      msg.robot.brain.data.highestPoints = highestPoints
     catch error
     	msg.send("Whoopsie! I couldn't store the payouts in the DB! Don't worry, I'll use the fallback. Error="+error)
     msg.send(pts + ' points awarded to ' + username)
