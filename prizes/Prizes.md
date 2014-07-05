@@ -5,7 +5,7 @@ Name  | Price
 Crunchyroll Guest Pass* | 500pts
 5 minute shoutout on stream**  | 1,000pts
 Add ReesayBot to your channel | 2,000pts
-Be a special guest commentator via Skype | 5,000pts
+Be a special guest commentator via Skype***** | 5,000pts
 Access to private ReesayBot features*** | 7,500pts
 Moderator on twitch.tv/Camtendo | 10,000pts
 Access to Camtendo's Plex Media Server | 12,000pts
@@ -20,6 +20,7 @@ Any Game on Steam | 10,000,000pts
 ** Not allowed during Smash Chateau Finals of any kind, during any game
 *** (updating status/game, custom greetings, more planned)
 **** Only visible to users in Camtendo's channel with the FrankerFaceZ extension
+***** Applicable to one set (Bo3 or Bo5). You can be dismissed from commentary without reason, with no refund
 
 Any exploits found in the betting engine will alter these prices
 Prices are subject to change at any time.
