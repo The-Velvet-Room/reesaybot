@@ -107,7 +107,7 @@ module.exports = (robot) ->
     sortedKeys = keys.sort (a, b) -> points[b] - points[a]
     for name in sortedKeys
       highestPoints[name] ?= points[name]
-      html += "<tr> <td>#{name}</td><td>#{points[name]}</td><td>highestPoints[nam]</td></tr>"
+      html += "<tr> <td>#{name}</td><td>#{points[name]}</td><td>#{highestPoints[name]}</td></tr>"
     res.end leaderboardContents robot.name, html
 
   robot.router.get '/points/current-bet', (req, res) ->
@@ -314,11 +314,11 @@ awardPoints = (msg, username, pts) ->
 
 removePoints = (msg, username, pts) ->
   try
-  	points[username] ?= 0
-  	points[username] -= parseInt(pts)
-  	msg.robot.brain.data.points = points
+    points[username] ?= 0
+    points[username] -= parseInt(pts)
+    msg.robot.brain.data.points = points
   catch error
-    	msg.send("Whoopsie! I couldn't store the payouts in the DB! Don't worry, I'll use the fallback. Error="+error)	
+    msg.send("Whoopsie! I couldn't store the payouts in the DB! Don't worry, I'll use the fallback. Error="+error)	
   msg.send(pts + ' points taken away from ' + username)
   if points[username] <= 0
     points[username] = 50
