@@ -162,6 +162,7 @@ module.exports = (robot) ->
       msg.send username+'-Senpai, you' + ' have ' + points[username] + ' points'
 
   robot.respond /lock bet(s)/i, (msg) ->
+        return msg.send("Sorry, you don't have permissions to lock bets, #{msg.message.user.name}-Senpai.") if msg.message.user.name != "camtendo"
         betLocked = true
         msg.send('Alright everyone! Bets are locked! View bets here: http://reesaybot.herokuapp.com/points/current-bet')
 
@@ -207,6 +208,7 @@ class Poll
 
   endPoll: (msg) =>
     return msg.send('There’s currently no bet to end.') unless @poll
+    return msg.send("Sorry, you don't have permissions to declare a winner, #{msg.message.user.name}-Senpai.") if msg.message.user.name != "camtendo"
 
     victorIndex = parseInt(msg.match[1]) - 1
     betLocked = false
