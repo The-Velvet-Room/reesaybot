@@ -100,7 +100,7 @@ module.exports = (robot) ->
     html = ''
     keys = Object.keys(points)
     sortedKeys = keys.sort (a, b) -> points[b] - points[a]
-    for name of sortedKeys
+    for name in sortedKeys
       html += "<tr> <td>#{name}</td><td>#{points[name]}</td> </tr>"
     res.end leaderboardContents robot.name, html
 
