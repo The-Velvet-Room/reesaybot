@@ -98,7 +98,7 @@ module.exports = (robot) ->
   robot.router.get '/points/leaderboard', (req, res) ->
     res.setHeader 'content-type', 'text/html'
     html = ''
-    keys = (k for k of points)
+    keys = Object.keys(points)
     sortedKeys = keys.sort (a, b) -> points[b] - points[a]
     for name of sortedKeys
       html += "<tr> <td>#{name}</td><td>#{points[name]}</td> </tr>"
