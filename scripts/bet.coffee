@@ -227,6 +227,7 @@ class Poll
         payoutRatio = (@poll.bets[username]) / (@poll.answers[0].totalPot) if victorIndex is 0
         payout = (payoutRatio * @poll.answers[0].totalPot).toFixed 0
         payout = (payoutRatio * @poll.answers[1].totalPot).toFixed 0 if victorIndex is 0
+        payout = 1 if payout < 1
         awardPoints(msg, username, payout)
       else
         removePoints(msg, username, @poll.bets[username])
