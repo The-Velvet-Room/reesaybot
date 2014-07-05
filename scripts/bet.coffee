@@ -202,7 +202,6 @@ class Poll
 
     msg.send """#{user.name} started a bet: #{@poll.question}
     Bet on a participant by saying: bet <number of choice> <value to bet>
-    0. [Opt out]
     #{this.printAnswers()}
     """
 
