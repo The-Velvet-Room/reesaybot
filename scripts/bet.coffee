@@ -207,6 +207,7 @@ class Poll
     return msg.send('Please provide 2 participants!') if answers.length != 2
 
     user = this.getUser(msg)
+    betLocked = false
     @poll = { user: user, question: msg.match[1], answers: answers, cancelled: 0, voters: {}, bets: {}, betChoices: {} }
 
     msg.send """#{user.name} started a bet: #{@poll.question}
