@@ -282,9 +282,8 @@ class Poll
 
     # User already voted
     if (userAnswer = @poll.voters[user.name]) != undefined
-        @poll.bets[user.name] = 0
         previousAnswer = @poll.answers[@poll.betChoices[user.name]]
-        previousAnswer.totalPot -= @polls.bets[user.name]
+        previousAnswer.totalPot -= @poll.bets[user.name]
         previousAnswer.votes--
 
     # Save user vote
