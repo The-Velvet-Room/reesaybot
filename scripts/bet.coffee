@@ -206,7 +206,7 @@ class Poll
     Bets will lock in 45 seconds.
     """
     setTimeout ->
-      lockBets(msg))
+      lockBets(msg)
     , 45000
 
   endPoll: (msg) =>
