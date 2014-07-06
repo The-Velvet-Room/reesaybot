@@ -203,14 +203,16 @@ class Poll
     msg.send """#{user.name} started a bet: #{@poll.question}
     Bet on a participant by saying: bet <number of choice> <value to bet>
     #{this.printAnswers()}
+    Bets will lock in 45 seconds.
     """
+    setTimeout(lockBets(msg), 45000)
 
   endPoll: (msg) =>
     return msg.send('There’s currently no bet to end.') unless @poll
     return msg.send("Sorry, you don't have permissions to declare a winner, #{msg.message.user.name}-Senpai.") if msg.message.user.name != "camtendo"
 
+    poll = @poll
     victorIndex = parseInt(msg.match[1]) - 1
-    betLocked = false
     @poll.victor = @poll.answers[victorIndex].text
 
 
@@ -227,12 +229,14 @@ class Poll
         payout = (payoutRatio * @poll.answers[0].totalPot).toFixed 0
         payout = (payoutRatio * @poll.answers[1].totalPot).toFixed 0 if victorIndex is 0
         payout = 1 if payout < 1
+        payout = 1 if payout > @poll.answers[0].totalPot + @poll.answers[1].totalPot
         awardPoints(msg, username, payout)
       else
         removePoints(msg, username, @poll.bets[username])
 
     @previousPoll = @poll
     @poll = null
+    betLocked = false
 
   showPreviousPoll: (msg) =>
     return msg.send('There are currently no previous results.') unless @previousPoll
@@ -271,17 +275,15 @@ class Poll
     return msg.send('Sorry! Bets are currently locked!') if betLocked
     return msg.send('Hey! You don\'t have that many points!') if bet > points[user.name]
     return msg.send("Invalid option! There are only #{@poll.answers.length} participants.") if number > @poll.answers.length
+    return msg.send("Invalid option! There are only #{@poll.answers.length} participants.") if number <= 0
     return msg.send("That\'s an invalid bet amount!") if bet <= 0
 
     # User already voted
     if (userAnswer = @poll.voters[user.name]) != undefined
-      sorry = "Sorry #{user.name}-Senpai, but you’ve already "
-      if userAnswer is 0
-        sorry += 'opted out.'
-      else
-        sorry += "bet on “#{userAnswer}. #{@poll.answers[userAnswer - 1].text}”."
-
-      return msg.send(sorry)
+        @poll.bets[user.name] = 0
+        previousAnswer = @poll.answers[@poll.betChoices[user.name]]
+        previousAnswer.totalPot -= @polls.bets[user.name]
+        previousAnswer.votes--
 
     # Save user vote
     @poll.voters[user.name] = number
@@ -302,6 +304,10 @@ class Poll
       @poll.betChoices[user.name] = number - 1
       poll = @poll
       msg.send("#{user.name} bet #{bet} on “#{votedAnswer.text}”") 
+
+lockBets = (msg) ->
+    betLocked = true
+    msg.send('Alright everyone! Bets are locked! View bets here: http://reesaybot.herokuapp.com/points/current-bet')
 
 awardPoints = (msg, username, pts) ->
     try
