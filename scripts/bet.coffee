@@ -13,6 +13,7 @@
 #   (user) points - see (user's) points
 #   bet (choiceIndex) (amount) - bet a certain amount on the choice. Choice index is either 1 or 2
 #   hubot how many points does (user) have? - Shows user's points
+#   all in (choice) - Bet all your available points on (choice)
 #	
 # Author:
 #   Camtendo
@@ -186,6 +187,7 @@ class Poll
     @robot.hear /start bet (.*) -p (.*)/i, this.createPoll
     @robot.respond /winner ([0-2])/i, this.endPoll
     @robot.hear /bet ([0-2]*) ([0-9]*)/i, this.vote
+    @robot.hear /all in ([0-2]*)/i, this.allInVote
     @robot.respond /show previous bets/i, this.showPreviousPoll
 
   getUser: (msg) ->
@@ -305,6 +307,47 @@ class Poll
       @poll.betChoices[user.name] = number - 1
       poll = @poll
       msg.send("#{user.name} bet #{bet} on “#{votedAnswer.text}”") 
+
+allInVote: (msg) =>
+    number = parseInt(msg.match[1])    
+    user = this.getUser(msg)
+    if(points[user.name] == undefined || points[user.name] == null)
+      points[user.name] = startingPoints
+
+    bet = points[user.name]
+    # Errors
+    return msg.send('Sorry, there’s no pending bet at the moment.') unless @poll
+    return msg.send('Sorry! Bets are currently locked!') if betLocked
+    return msg.send('Hey! You don\'t have that many points!') if bet > points[user.name]
+    return msg.send("Invalid option! There are only #{@poll.answers.length} participants.") if number > @poll.answers.length
+    return msg.send("Invalid option! There are only #{@poll.answers.length} participants.") if number <= 0
+    return msg.send("That\'s an invalid bet amount!") if bet <= 0
+
+    # User already voted
+    if (userAnswer = @poll.voters[user.name]) != undefined
+        previousAnswer = @poll.answers[@poll.betChoices[user.name]]
+        previousAnswer.totalPot -= @poll.bets[user.name]
+        previousAnswer.votes--
+
+    # Save user vote
+    @poll.voters[user.name] = number
+    votersCount = Object.keys(@poll.voters).length
+    poll = @poll
+
+    # Cancel vote
+    if number is 0
+      @poll.cancelled++
+      msg.send("#{user.name} decided not to bet this time.")
+
+    # Cast vote
+    else
+      votedAnswer = @poll.answers[number - 1]
+      votedAnswer.votes++
+      votedAnswer.totalPot += bet
+      @poll.bets[user.name] = bet
+      @poll.betChoices[user.name] = number - 1
+      poll = @poll
+      msg.send("#{user.name} bet #{bet} on “#{votedAnswer.text}”")
 
 lockBets = (msg) ->
     betLocked = true
