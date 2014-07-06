@@ -213,6 +213,7 @@ class Poll
 
   endPoll: (msg) =>
     return msg.send('There’s currently no bet to end.') unless @poll
+    return msg.send('Sorry, bets are still able to be made.') unless betLocked
     return msg.send("Sorry, you don't have permissions to declare a winner, #{msg.message.user.name}-Senpai.") if msg.message.user.name != "camtendo"
 
     poll = @poll
@@ -228,8 +229,8 @@ class Poll
 
     for username in Object.keys(@poll.betChoices)
       if @poll.betChoices[username] is victorIndex
-        payoutRatio = (@poll.bets[username]) / (@poll.answers[1].totalPot)
-        payoutRatio = (@poll.bets[username]) / (@poll.answers[0].totalPot) if victorIndex == 0
+        msg.send('DEBUG: victorIndex='+victorIndex)
+        payoutRatio = (@poll.bets[username]) / (@poll.answers[victorIndex].totalPot)
         payout = (payoutRatio * @poll.answers[0].totalPot).toFixed 0
         payout = (payoutRatio * @poll.answers[1].totalPot).toFixed 0 if victorIndex == 0
         msg.send("DEBUG: payoutBeforeAdj="+payout)
@@ -237,7 +238,7 @@ class Poll
         payout = 1 if payout > @poll.answers[0].totalPot + @poll.answers[1].totalPot
         msg.send("DEBUG: totalPot0="+@poll.answers[0].totalPot)
         msg.send("DEBUG: totalPot1="+@poll.answers[1].totalPot)
-        msg.sent("DEBUG: PayoutRatio="+payoutRatio)
+        msg.send("DEBUG: PayoutRatio="+payoutRatio)
         awardPoints(msg, username, payout)
       else
         removePoints(msg, username, @poll.bets[username])
