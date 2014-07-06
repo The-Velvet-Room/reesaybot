@@ -157,6 +157,13 @@ module.exports = (robot) ->
       points[username] = 0
       awardPoints(msg, username, newPoints)
 
+  robot.hear /(.*?) set peak (.?)/i, (msg) ->
+      return msg.send("Sorry, you don't have permissions to override peak points, #{msg.message.user.name}-Senpai.") if msg.message.user.name != "camtendo"
+      username = msg.match[1].toLowerCase()
+      newPoints = msg.message.text.substr(msg.message.text.indexOf("peak ") + 5) 
+      highestPoints[username] = newPoints
+      msg.send(""+username+" has a new peak of "+newPoints)
+
   robot.hear /my points$/i, (msg) ->
       username = msg.message.user.name.toLowerCase()
       points[username] ?= startingPoints
@@ -224,7 +231,7 @@ class Poll
     msg.send """Here are the results for “#{@poll.question}”:
     #{this.printResults(@poll)}
     Payouts will now be distributed.
-    The leaderboard has been updated: #{leaderboardUrl}
+    The leaderboard will be updated shortly: #{leaderboardUrl}
     """
 
     for username in Object.keys(@poll.betChoices)
