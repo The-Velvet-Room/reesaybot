@@ -308,7 +308,8 @@ class Poll
       poll = @poll
       msg.send("#{user.name} bet #{bet} on “#{votedAnswer.text}”") 
 
-allInVote: (msg) =>
+  #Go hard or go home
+  allInVote: (msg) =>
     number = parseInt(msg.match[1])    
     user = this.getUser(msg)
     if(points[user.name] == undefined || points[user.name] == null)
