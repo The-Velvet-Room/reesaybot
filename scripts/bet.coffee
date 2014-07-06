@@ -205,7 +205,9 @@ class Poll
     #{this.printAnswers()}
     Bets will lock in 45 seconds.
     """
-    setTimeout(-> lockBets(msg)), 45000
+    setTimeout ->
+      lockBets(msg))
+    , 45000
 
   endPoll: (msg) =>
     return msg.send('There’s currently no bet to end.') unless @poll
