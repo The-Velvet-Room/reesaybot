@@ -229,16 +229,11 @@ class Poll
 
     for username in Object.keys(@poll.betChoices)
       if @poll.betChoices[username] is victorIndex
-        msg.send('DEBUG: victorIndex='+victorIndex)
         payoutRatio = (@poll.bets[username]) / (@poll.answers[victorIndex].totalPot)
         payout = (payoutRatio * @poll.answers[0].totalPot).toFixed 0
         payout = (payoutRatio * @poll.answers[1].totalPot).toFixed 0 if victorIndex == 0
-        msg.send("DEBUG: payoutBeforeAdj="+payout)
         payout = 1 if payout < 1
         payout = 1 if payout > @poll.answers[0].totalPot + @poll.answers[1].totalPot
-        msg.send("DEBUG: totalPot0="+@poll.answers[0].totalPot)
-        msg.send("DEBUG: totalPot1="+@poll.answers[1].totalPot)
-        msg.send("DEBUG: PayoutRatio="+payoutRatio)
         awardPoints(msg, username, payout)
       else
         removePoints(msg, username, @poll.bets[username])
@@ -262,11 +257,6 @@ class Poll
     ("#{i+1}. #{answer.text}" for answer, i in @poll.answers).join("\n")
 
   printResults: (poll) ->
-    poll.answers.sort (a, b) ->
-      return 1 if (a.votes < b.votes)
-      return -1 if (a.votes > b.votes)
-      0
-
     results = ''
     results += "#{poll.victor} was the victor.\n\n"
     results += ("Name: #{answer.text} - TotalPot: #{answer.totalPot}" for answer in poll.answers).join("\n")
