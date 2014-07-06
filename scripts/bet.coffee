@@ -213,11 +213,19 @@ class Poll
     msg.send """#{user.name} started a bet: #{@poll.question}
     Bet on a participant by saying: bet <number of choice> <value to bet>
     #{this.printAnswers()}
-    Bets will lock in 45 seconds.
+    Bets will lock in 60 seconds.
     """
     setTimeout ->
+      msg.send("30 seconds remaining to bet!")
+    , 30000
+
+    setTimeout ->
+      msg.send("10 seconds remaining to bet!")
+    , 50000
+
+    setTimeout ->
       lockBets(msg)
-    , 45000
+    , 60000
 
   endPoll: (msg) =>
     return msg.send('There’s currently no bet to end.') unless @poll
