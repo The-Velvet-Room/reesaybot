@@ -229,9 +229,9 @@ class Poll
     for username in Object.keys(@poll.betChoices)
       if @poll.betChoices[username] is victorIndex
         payoutRatio = (@poll.bets[username]) / (@poll.answers[1].totalPot)
-        payoutRatio = (@poll.bets[username]) / (@poll.answers[0].totalPot) if victorIndex is 0
+        payoutRatio = (@poll.bets[username]) / (@poll.answers[0].totalPot) if victorIndex == 0
         payout = (payoutRatio * @poll.answers[0].totalPot).toFixed 0
-        payout = (payoutRatio * @poll.answers[1].totalPot).toFixed 0 if victorIndex is 0
+        payout = (payoutRatio * @poll.answers[1].totalPot).toFixed 0 if victorIndex == 0
         payout = 1 if payout < 1
         payout = 1 if payout > @poll.answers[0].totalPot + @poll.answers[1].totalPot
         awardPoints(msg, username, payout)
