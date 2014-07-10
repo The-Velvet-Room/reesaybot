@@ -12,7 +12,7 @@ module.exports = (robot) ->
     msg.send "PONG"
 
   robot.hear /ECHO (.*)$/i, (msg) ->
-    msg.send msg.match[1]
+    msg.send msg.match[1] if msg.match[1].charAt 1 != '!'
 
   robot.respond /TIME$/i, (msg) ->
     msg.send "Server time is: #{new Date()}"
