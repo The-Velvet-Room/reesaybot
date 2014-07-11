@@ -18,7 +18,7 @@
 # Author:
 #   Camtendo
 
-admins = {"camtendo", "t0asterb0t"}
+admins = ["camtendo", "t0asterb0t"]
 points = {}
 highestPoints = {}
 totalPot = {}
