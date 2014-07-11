@@ -239,7 +239,7 @@ class Poll
     @poll.victor = @poll.answers[victorIndex].text
 
 
-    msg.send """Here are the results!
+    msg.send """Alright everyone! Here are the results!
     #{this.printResults(@poll)}
     Payouts will now be distributed.
     The leaderboard will be updated shortly: #{leaderboardUrl}
