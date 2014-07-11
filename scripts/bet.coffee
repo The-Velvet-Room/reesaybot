@@ -179,10 +179,7 @@ module.exports = (robot) ->
     id = ""
     id += Math.random().toString(36).substr(2) while id.length < length
     id.substr 0, length
-
-  isAdmin = (term) -> 
-    admins.indexOf(term) isnt -1
-       
+    
 class Poll
 
   constructor: (@robot) ->
@@ -391,3 +388,6 @@ removePoints = (msg, username, pts) ->
   if points[username] <= 0
     points[username] = 50
     msg.send(username + ' has gone bankrupt! Receiving a small bailout of 50.')
+
+isAdmin = (term) -> 
+    admins.indexOf(term) isnt -1
