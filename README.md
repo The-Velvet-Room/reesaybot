@@ -13,5 +13,6 @@ Notable Features
 
 TODO
 =========
+* Interact with the challonge API
 * SRL style Racebot features (start race, stop race, participants, race rating, etc.)
 * World Record fetching
