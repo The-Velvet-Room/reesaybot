@@ -18,6 +18,7 @@
 # Author:
 #   Camtendo
 
+admins = {"camtendo", "t0asterb0t"}
 points = {}
 highestPoints = {}
 totalPot = {}
@@ -170,7 +171,7 @@ module.exports = (robot) ->
       msg.send username+'-Senpai, you' + ' have ' + points[username] + ' points'
 
   robot.respond /lock bet(s)/i, (msg) ->
-        return msg.send("Sorry, you don't have permissions to lock bets, #{msg.message.user.name}-Senpai.") if msg.message.user.name != "camtendo"
+        return msg.send("Sorry, you don't have permissions to lock bets, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
         betLocked = true
         msg.send('Alright everyone! Bets are locked! View bets here: http://reesaybot.herokuapp.com/points/current-bet')
 
@@ -178,6 +179,9 @@ module.exports = (robot) ->
     id = ""
     id += Math.random().toString(36).substr(2) while id.length < length
     id.substr 0, length
+
+  isAdmin = (term) -> 
+    admins.indexOf(term) isnt -1
        
 class Poll
 
@@ -202,7 +206,7 @@ class Poll
 
   # Poll management
   createPoll: (msg) =>
-    return msg.send("Sorry, you don't have permissions to start a bet, #{msg.message.user.name}-Senpai.") if msg.message.user.name != "camtendo"
+    return msg.send("Sorry, you don't have permissions to start a bet, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
     answers = this.createAnswers(msg.match[2])
     return msg.send('Please provide 2 participants!') if answers.length != 2
 
@@ -230,7 +234,7 @@ class Poll
   endPoll: (msg) =>
     return msg.send('There’s currently no bet to end.') unless @poll
     return msg.send('Sorry, bets are still able to be made.') unless betLocked
-    return msg.send("Sorry, you don't have permissions to declare a winner, #{msg.message.user.name}-Senpai.") if msg.message.user.name != "camtendo"
+    return msg.send("Sorry, you don't have permissions to declare a winner, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
 
     poll = @poll
     victorIndex = parseInt(msg.match[1]) - 1
