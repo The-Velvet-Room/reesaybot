@@ -193,7 +193,7 @@ class Poll
       points = {} unless points
       highestPoints = {} unless highestPoints
 
-    @robot.hear /start bet (.*) -p (.*)/i, this.createPoll
+    @robot.hear /start bet (.*)/i, this.createPoll
     @robot.respond /winner ([0-2])/i, this.endPoll
     @robot.hear /bet ([0-2]*) ([0-9]*)/i, this.vote
     @robot.hear /all in ([0-2]*)/i, this.allInVote
@@ -205,14 +205,14 @@ class Poll
   # Poll management
   createPoll: (msg) =>
     return msg.send("Sorry, you don't have permissions to start a bet, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
-    answers = this.createAnswers(msg.match[2])
+    answers = this.createAnswers(msg.match[1])
     return msg.send('Please provide 2 participants!') if answers.length != 2
 
     user = this.getUser(msg)
     betLocked = false
-    @poll = { user: user, question: msg.match[1], answers: answers, cancelled: 0, voters: {}, bets: {}, betChoices: {} }
+    @poll = { user: user, question: "", answers: answers, cancelled: 0, voters: {}, bets: {}, betChoices: {} }
 
-    msg.send """#{user.name} started a bet: #{@poll.question}
+    msg.send """#{user.name} started a bet!
     Bet on a participant by saying: bet <number of choice> <value to bet>
     #{this.printAnswers()}
     Bets will lock in 60 seconds.
