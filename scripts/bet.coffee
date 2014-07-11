@@ -172,6 +172,7 @@ module.exports = (robot) ->
 
   robot.respond /lock bet(s)/i, (msg) ->
         return msg.send("Sorry, you don't have permissions to lock bets, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
+        return msg.send("Bets are already locked.") if betLocked
         betLocked = true
         msg.send('Alright everyone! Bets are locked! View bets here: http://reesaybot.herokuapp.com/points/current-bet')
 
@@ -217,15 +218,15 @@ class Poll
     Bets will lock in 60 seconds.
     """
     setTimeout ->
-      msg.send("30 seconds remaining to bet!")
+      msg.send("30 seconds remaining to bet!") if !betLocked
     , 30000
 
     setTimeout ->
-      msg.send("10 seconds remaining to bet!")
+      msg.send("10 seconds remaining to bet!") if !betLocked
     , 50000
 
     setTimeout ->
-      lockBets(msg)
+      lockBets(msg) if !betLocked
     , 60000
 
   endPoll: (msg) =>
