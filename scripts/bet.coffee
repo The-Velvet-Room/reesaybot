@@ -14,11 +14,11 @@
 #   bet (choiceIndex) (amount) - bet a certain amount on the choice. Choice index is either 1 or 2
 #   hubot how many points does (user) have? - Shows user's points
 #   all in (choice) - Bet all your available points on (choice)
-#	
+#
 # Author:
 #   Camtendo
 
-admins = ["camtendo", "t0asterb0t"]
+admins = ["camtendo", "t0asterb0t", "hollyfrass"]
 points = {}
 highestPoints = {}
 totalPot = {}
@@ -99,8 +99,8 @@ currentBetContents = (totalBets, leftBetChoice, rightBetChoice, odds, table) ->
 </html>
   """
 
-module.exports = (robot) ->	
-  new Poll robot 
+module.exports = (robot) ->
+  new Poll robot
 
   robot.router.get '/points/leaderboard', (req, res) ->
     res.setHeader 'content-type', 'text/html'
@@ -154,14 +154,14 @@ module.exports = (robot) ->
   robot.hear /(.*?) set points (.?)/i, (msg) ->
       return msg.send("Sorry, you don't have permissions to override points, #{msg.message.user.name}-Senpai.") if msg.message.user.name != "camtendo"
       username = msg.match[1].toLowerCase()
-      newPoints = msg.message.text.substr(msg.message.text.indexOf("points ") + 7) 
+      newPoints = msg.message.text.substr(msg.message.text.indexOf("points ") + 7)
       points[username] = 0
       awardPoints(msg, username, newPoints)
 
   robot.hear /(.*?) set peak (.?)/i, (msg) ->
       return msg.send("Sorry, you don't have permissions to override peak points, #{msg.message.user.name}-Senpai.") if msg.message.user.name != "camtendo"
       username = msg.match[1].toLowerCase()
-      newPoints = msg.message.text.substr(msg.message.text.indexOf("peak ") + 5) 
+      newPoints = msg.message.text.substr(msg.message.text.indexOf("peak ") + 5)
       highestPoints[username] = newPoints
       msg.send(""+username+" has a new peak of "+newPoints)
 
@@ -180,7 +180,7 @@ module.exports = (robot) ->
     id = ""
     id += Math.random().toString(36).substr(2) while id.length < length
     id.substr 0, length
-    
+
 class Poll
 
   constructor: (@robot) ->
@@ -319,11 +319,11 @@ class Poll
       @poll.bets[user.name] = bet
       @poll.betChoices[user.name] = number - 1
       poll = @poll
-      msg.send("#{user.name} bet #{bet} on “#{votedAnswer.text}”") 
+      msg.send("#{user.name} bet #{bet} on “#{votedAnswer.text}”")
 
   #Go hard or go home
   allInVote: (msg) =>
-    number = parseInt(msg.match[1])    
+    number = parseInt(msg.match[1])
     user = this.getUser(msg)
     if(points[user.name] == undefined || points[user.name] == null)
       points[user.name] = startingPoints
@@ -384,11 +384,11 @@ removePoints = (msg, username, pts) ->
     points[username] -= parseInt(pts)
     msg.robot.brain.data.points = points
   catch error
-    msg.send("Whoopsie! I couldn't store the payouts in the DB! Don't worry, I'll use the fallback. Error="+error)	
+    msg.send("Whoopsie! I couldn't store the payouts in the DB! Don't worry, I'll use the fallback. Error="+error)
   msg.send(pts + ' points taken away from ' + username)
   if points[username] <= 0
     points[username] = 50
     msg.send(username + ' has gone bankrupt! Receiving a small bailout of 50.')
 
-isAdmin = (term) -> 
+isAdmin = (term) ->
     admins.indexOf(term) isnt -1
