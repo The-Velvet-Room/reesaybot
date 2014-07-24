@@ -17,7 +17,7 @@ module.exports = (robot) ->
 
   start = new Date().getTime()
 
-  robot.respond /uptime/i, (msg) ->
+  robot.hear /uptime/i, (msg) ->
     uptimeMe msg, start, (uptime) ->
       msg.send uptime
 
