@@ -5,7 +5,7 @@
 #   None
 #
 # Configuration:
-#   None
+#   CHALLONGE_API_KEY
 #
 # Commands:
 #	  hubot leaderboard - Request the leaderboard url.
@@ -18,6 +18,7 @@
 # Author:
 #   Camtendo
 
+#Betting Vars
 admins = ["camtendo", "t0asterb0t", "hollyfrass"]
 points = {}
 highestPoints = {}
@@ -27,6 +28,13 @@ startingPoints = 100
 betLocked = false
 leaderboardUrl = 'http://reesaybot.herokuapp.com/points/leaderboard'
 currentBetUrl = 'http://reesaybot.herokuapp.com/points/current-bet'
+
+#Challonge Vars
+challongeApi = 'https://api.challonge.com/v1'
+apiKey = process.env.CHALLONGE_API_KEY
+tournamentHash = ''
+matches = []
+autoUpdate = false
 
 leaderboardContents = (name, points) ->
 
@@ -138,8 +146,18 @@ module.exports = (robot) ->
       table += "<tr>#{leftCell}#{rightCell}</tr>"
     res.end currentBetContents votersCount, leftSide, rightSide, odds, table
 
+  robot.respond /set tournament (.*?)/i, (msg) ->
+      return msg.send("Sorry, you don't have permissions to edit that variable, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
+      tournamentHash = msg.match[1]
+      msg.send 'The tournament for automated betting is now set to '+tournamentHash
+
   robot.respond /leaderboard/i, (msg) ->
       msg.send leaderboardUrl
+
+  robot.respond /toggle autoupdate/i, (msg) ->
+      return msg.send("Sorry, you don't have permissions to edit that variable, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
+      autoUpdate = !autoUpdate 
+      msg.send 'Automatic updating is now set to '+autoUpdate
 
   robot.respond /how many points does (.*?) have\??/i, (msg) ->
       username = msg.match[1].toLowerCase()
@@ -392,3 +410,6 @@ removePoints = (msg, username, pts) ->
 
 isAdmin = (term) ->
     admins.indexOf(term) isnt -1
+
+fetchMatches = (msg) ->
+    
