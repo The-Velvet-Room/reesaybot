@@ -455,14 +455,14 @@ fetchTournament: (msg) =>
 
 getUpcomingMatches: (msg) =>
   msg.send("Upcoming matches in the tournament:")
-  this.fetchTournament(msg)
-  for match in matches then do (match) =>
-    if match.match.state == "open"
-      playerOne = this.getPlayer(msg, match.match.player1_id)
-      playerTwo = this.getPlayer(msg, match.match.player2_id)
-      msg.send "Match #{match.match.identifier}: #{playerOne} vs. #{playerTwo}"
-    else
-      state = match.match.state
+  #this.fetchTournament(msg)
+  #for match in matches then do (match) =>
+  #  if match.match.state == "open"
+  #    playerOne = this.getPlayer(msg, match.match.player1_id)
+  #    playerTwo = this.getPlayer(msg, match.match.player2_id)
+  #    msg.send "Match #{match.match.identifier}: #{playerOne} vs. #{playerTwo}"
+  #  else
+  #    state = match.match.state
 
 getPlayer = (msg, userId) ->
   players.filter (player) ->
