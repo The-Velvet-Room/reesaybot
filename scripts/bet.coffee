@@ -220,6 +220,32 @@ class Poll
     @robot.hear /tournament bet (.*)/i, this.createAutoPoll
     @robot.respond /matches/i, this.getUpcomingMatches
 
+  fetchTournament: (msg) =>
+  msg.send("Updating tournament records...")
+  msg.http(challongeApi+"/tournaments/"+tournamentHash+".json?include_matches=1&include_participants=1")
+        .get() (err, res, body) ->
+          try
+            json = JSON.parse(body)
+            matches = json.tournament.matches
+            players = json.tournament.participants
+          catch error
+            msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
+
+  getUpcomingMatches: (msg) =>
+    msg.send("Upcoming matches in the tournament:")
+    this.fetchTournament(msg)
+    for match in matches then do (match) =>
+      if match.match.state == "open"
+        playerOne = this.getPlayer(msg, match.match.player1_id)
+        playerTwo = this.getPlayer(msg, match.match.player2_id)
+        msg.send "Match #{match.match.identifier}: #{playerOne} vs. #{playerTwo}"
+      else
+        state = match.match.state
+
+  getPlayer: (msg, userId) ->
+    players.filter (player) ->
+      player.participant.id == userId
+
   getUser: (msg) ->
     msg.message.user
 
@@ -441,29 +467,3 @@ removePoints = (msg, username, pts) ->
 
 isAdmin = (term) ->
     admins.indexOf(term) isnt -1
-
-fetchTournament: (msg) =>
-  msg.send("Updating tournament records...")
-  #msg.http(challongeApi+"/tournaments/"+tournamentHash+".json?include_matches=1&include_participants=1")
-  #      .get() (err, res, body) ->
-  #        try
-  #          json = JSON.parse(body)
-  #          matches = json.tournament.matches
-  #          players = json.tournament.participants
-  #        catch error
-  #          msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
-
-getUpcomingMatches: (msg) =>
-  msg.send("Upcoming matches in the tournament:")
-  #this.fetchTournament(msg)
-  #for match in matches then do (match) =>
-  #  if match.match.state == "open"
-  #    playerOne = this.getPlayer(msg, match.match.player1_id)
-  #    playerTwo = this.getPlayer(msg, match.match.player2_id)
-  #    msg.send "Match #{match.match.identifier}: #{playerOne} vs. #{playerTwo}"
-  #  else
-  #    state = match.match.state
-
-#getPlayer = (msg, userId) ->
-#  players.filter (player) ->
-#    player.participant.id == userId
