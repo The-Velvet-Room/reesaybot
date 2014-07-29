@@ -221,8 +221,8 @@ class Poll
     @robot.respond /matches/i, this.getUpcomingMatches
 
   fetchTournament: (msg) =>
-  msg.send("Updating tournament records...")
-  msg.http(challongeApi+"/tournaments/"+tournamentHash+".json?include_matches=1&include_participants=1")
+    msg.send("Updating tournament records...")
+    msg.http(challongeApi+"/tournaments/"+tournamentHash+".json?include_matches=1&include_participants=1")
         .get() (err, res, body) ->
           try
             json = JSON.parse(body)
