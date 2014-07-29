@@ -240,8 +240,8 @@ class Poll
       if match.match.state == "open"
         playerOne = this.getPlayer(msg, match.match.player1_id)
         playerTwo = this.getPlayer(msg, match.match.player2_id)
-        msg.send "DEBUG #{Util.inspect(playerOne)}"
-        msg.send "Match #{match.match.identifier}: #{playerOne} vs. #{playerTwo}"
+        #msg.send "DEBUG #{Util.inspect(playerOne)}"
+        msg.send "Match #{match.match.identifier}: #{playerOne[0].participant.name} vs. #{playerTwo[0].participant.name}"
       else
         state = match.match.state
 
