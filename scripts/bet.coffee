@@ -457,8 +457,8 @@ getUpcomingMatches = (msg) ->
   this.fetchTournament(msg)
   for match in matches then do (match) =>
     if match.match.state == "open"
-      playerOne = getPlayer(match.match.player1_id)
-      playerTwo = getPlayer(match.match.player2_id)
+      playerOne = this.getPlayer(match.match.player1_id)
+      playerTwo = this.getPlayer(match.match.player2_id)
       msg.send "Match #{match.match.identifier}: #{playerOne} vs. #{playerTwo}"
     else
       state = match.match.state
