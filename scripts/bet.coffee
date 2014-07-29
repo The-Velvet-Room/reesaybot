@@ -153,7 +153,7 @@ module.exports = (robot) ->
       return msg.send("Sorry, you don't have permissions to edit that variable, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
       tournamentHash = msg.match[1]
       msg.send 'The tournament for automated betting is now set to '+tournamentHash
-      this.fetchTournament(msg)
+      fetchTournament(msg)
 
   robot.respond /leaderboard/i, (msg) ->
       msg.send leaderboardUrl
@@ -222,17 +222,6 @@ class Poll
     @robot.respond /show previous bets/i, this.showPreviousPoll
     @robot.hear /tournament bet (.*)/i, this.createAutoPoll
     @robot.respond /matches/i, this.getUpcomingMatches
-
-  fetchTournament: (msg) =>
-    msg.send("Updating tournament records...")
-    msg.http(challongeApi+"/tournaments/"+tournamentHash+".json?include_matches=1&include_participants=1")
-        .get() (err, res, body) ->
-          try
-            json = JSON.parse(body)
-            matches = json.tournament.matches
-            players = json.tournament.participants
-          catch error
-            msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
 
   getUpcomingMatches: (msg) =>
     msg.send("Upcoming matches in the tournament:")   
@@ -440,6 +429,17 @@ class Poll
       @poll.betChoices[user.name] = number - 1
       poll = @poll
       msg.send("#{user.name} bet #{bet} on “#{votedAnswer.text}”")
+
+fetchTournament: (msg) =>
+    msg.send("Updating tournament records...")
+    msg.http(challongeApi+"/tournaments/"+tournamentHash+".json?include_matches=1&include_participants=1")
+        .get() (err, res, body) ->
+          try
+            json = JSON.parse(body)
+            matches = json.tournament.matches
+            players = json.tournament.participants
+          catch error
+            msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
 
 lockBets = (msg) ->
     betLocked = true
