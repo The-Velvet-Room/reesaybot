@@ -198,11 +198,6 @@ module.exports = (robot) ->
         betLocked = true
         msg.send('Alright everyone! Bets are locked! View bets here: http://reesaybot.herokuapp.com/points/current-bet')
 
-  uniqueId = (length=8) ->
-    id = ""
-    id += Math.random().toString(36).substr(2) while id.length < length
-    id.substr 0, length
-
 class Poll
 
   constructor: (@robot) ->
@@ -271,7 +266,6 @@ class Poll
   # Poll management
   createAutoPoll: (msg) =>
     return msg.send("Sorry, you don't have permissions to start a bet, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
-    this.fetchTournament(msg)
     answers = this.createAnswers(msg.match[1])
     return msg.send('Please provide 2 participants!') if answers.length != 2
 
@@ -430,7 +424,7 @@ class Poll
       poll = @poll
       msg.send("#{user.name} bet #{bet} on “#{votedAnswer.text}”")
 
-fetchTournament: (msg) =>
+fetchTournament: (msg) ->
     msg.send("Updating tournament records...")
     msg.http(challongeApi+"/tournaments/"+tournamentHash+".json?include_matches=1&include_participants=1")
         .get() (err, res, body) ->
