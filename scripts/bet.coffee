@@ -30,10 +30,11 @@ leaderboardUrl = 'http://reesaybot.herokuapp.com/points/leaderboard'
 currentBetUrl = 'http://reesaybot.herokuapp.com/points/current-bet'
 
 #Challonge Vars
-challongeApi = 'https://api.challonge.com/v1'
 apiKey = process.env.CHALLONGE_API_KEY
+challongeApi = 'https://Camtendo:'+apiKey+'@api.challonge.com/v1'
 tournamentHash = ''
 matches = []
+players = []
 autoUpdate = false
 
 leaderboardContents = (name, points) ->
@@ -216,6 +217,8 @@ class Poll
     @robot.hear /bet ([0-2]*) ([0-9]*)/i, this.vote
     @robot.hear /all in ([0-2]*)/i, this.allInVote
     @robot.respond /show previous bets/i, this.showPreviousPoll
+    @robot.hear /tournament bet (.*)/i, this.createAutoPoll
+    @robot.respond /matches/i, this.getUpcomingMatches
 
   getUser: (msg) ->
     msg.message.user
@@ -223,6 +226,34 @@ class Poll
   # Poll management
   createPoll: (msg) =>
     return msg.send("Sorry, you don't have permissions to start a bet, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
+    answers = this.createAnswers(msg.match[1])
+    return msg.send('Please provide 2 participants!') if answers.length != 2
+
+    user = this.getUser(msg)
+    betLocked = false
+    @poll = { user: user, question: "", answers: answers, cancelled: 0, voters: {}, bets: {}, betChoices: {} }
+
+    msg.send """#{user.name} started a bet!
+    Bet on a participant by saying: bet <number of choice> <value to bet>
+    #{this.printAnswers()}
+    Bets will lock in 60 seconds.
+    """
+    setTimeout ->
+      msg.send("30 seconds remaining to bet!") if !betLocked
+    , 30000
+
+    setTimeout ->
+      msg.send("10 seconds remaining to bet!") if !betLocked
+    , 50000
+
+    setTimeout ->
+      lockBets(msg) if !betLocked
+    , 60000
+
+  # Poll management
+  createAutoPoll: (msg) =>
+    return msg.send("Sorry, you don't have permissions to start a bet, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
+    this.fetchTournament(msg)
     answers = this.createAnswers(msg.match[1])
     return msg.send('Please provide 2 participants!') if answers.length != 2
 
@@ -411,5 +442,27 @@ removePoints = (msg, username, pts) ->
 isAdmin = (term) ->
     admins.indexOf(term) isnt -1
 
-fetchMatches = (msg) ->
-    
+fetchTournament = (msg) ->
+  msg.send "Updating tournament records..."
+  msg.http(challongeApi+"/tournaments/"+tournamentHash+".json?include_matches=1&include_participants=1")
+        .get() (err, res, body) ->
+          try
+            json = JSON.parse(body)
+            matches = json.tournament.matches
+            players = json.tournament.participants
+          catch error
+            msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
+
+getUpcomingMatches = (msg) ->
+  this.fetchTournament(msg)
+  for match in matches then do (match) =>
+    if match.match.state == "open"
+      playerOne = getPlayer(match.match.player1_id)
+      playerTwo = getPlayer(match.match.player2_id)
+      msg.send "Match #{match.match.identifier}: #{playerOne} vs. #{playerTwo}"
+    else
+      state = match.match.state
+
+getPlayer = (userId) ->
+  for player in players then do (player) =>
+    return player if player.participant.id == userId
