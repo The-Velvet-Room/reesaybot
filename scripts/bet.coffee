@@ -18,6 +18,8 @@
 # Author:
 #   Camtendo
 
+Util = require 'util'
+
 #Betting Vars
 admins = ["camtendo", "t0asterb0t", "hollyfrass"]
 points = {}
@@ -232,13 +234,14 @@ class Poll
             msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
 
   getUpcomingMatches: (msg) =>
-    msg.send("Upcoming matches in the tournament:")
     this.fetchTournament(msg)
+    msg.send("Upcoming matches in the tournament:")   
     for match in matches then do (match) =>
       if match.match.state == "open"
-        playerOne = this.getPlayer(msg, match.match.player1_id)[0]
-        playerTwo = this.getPlayer(msg, match.match.player2_id)[0]
-        msg.send "Match #{match.match.identifier}: #{playerOne.name} vs. #{playerTwo.name}"
+        playerOne = this.getPlayer(msg, match.match.player1_id)
+        playerTwo = this.getPlayer(msg, match.match.player2_id)
+        msg.send "DEBUG #{Util.inspect(playerOne)}"
+        msg.send "Match #{match.match.identifier}: #{playerOne} vs. #{playerTwo}"
       else
         state = match.match.state
 
