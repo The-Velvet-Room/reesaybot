@@ -444,14 +444,14 @@ isAdmin = (term) ->
 
 fetchTournament: (msg) =>
   msg.send("Updating tournament records...")
-  msg.http(challongeApi+"/tournaments/"+tournamentHash+".json?include_matches=1&include_participants=1")
-        .get() (err, res, body) ->
-          try
-            json = JSON.parse(body)
-            matches = json.tournament.matches
-            players = json.tournament.participants
-          catch error
-            msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
+  #msg.http(challongeApi+"/tournaments/"+tournamentHash+".json?include_matches=1&include_participants=1")
+  #      .get() (err, res, body) ->
+  #        try
+  #          json = JSON.parse(body)
+  #          matches = json.tournament.matches
+  #          players = json.tournament.participants
+  #        catch error
+  #          msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
 
 getUpcomingMatches: (msg) =>
   msg.send("Upcoming matches in the tournament:")
