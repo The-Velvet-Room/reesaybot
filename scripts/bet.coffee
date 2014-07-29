@@ -147,7 +147,7 @@ module.exports = (robot) ->
       table += "<tr>#{leftCell}#{rightCell}</tr>"
     res.end currentBetContents votersCount, leftSide, rightSide, odds, table
 
-  robot.respond /set tournament (.*?)/i, (msg) ->
+  robot.respond /set tournament (.*)/i, (msg) ->
       return msg.send("Sorry, you don't have permissions to edit that variable, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
       tournamentHash = msg.match[1]
       msg.send 'The tournament for automated betting is now set to '+tournamentHash
