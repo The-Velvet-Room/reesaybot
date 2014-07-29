@@ -464,6 +464,6 @@ getUpcomingMatches: (msg) =>
   #  else
   #    state = match.match.state
 
-getPlayer = (msg, userId) ->
-  players.filter (player) ->
-    player.participant.id == userId
+#getPlayer = (msg, userId) ->
+#  players.filter (player) ->
+#    player.participant.id == userId
