@@ -443,7 +443,7 @@ isAdmin = (term) ->
     admins.indexOf(term) isnt -1
 
 fetchTournament = (msg) ->
-  msg.send "Updating tournament records..."
+  msg.send("Updating tournament records...")
   msg.http(challongeApi+"/tournaments/"+tournamentHash+".json?include_matches=1&include_participants=1")
         .get() (err, res, body) ->
           try
@@ -454,6 +454,7 @@ fetchTournament = (msg) ->
             msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
 
 getUpcomingMatches = (msg) ->
+  msg.send("Upcoming matches in the tournament:")
   this.fetchTournament(msg)
   for match in matches then do (match) =>
     if match.match.state == "open"
