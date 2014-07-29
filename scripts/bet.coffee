@@ -198,6 +198,17 @@ module.exports = (robot) ->
         betLocked = true
         msg.send('Alright everyone! Bets are locked! View bets here: http://reesaybot.herokuapp.com/points/current-bet')
 
+  fetchTournament: (msg) ->
+    msg.send("Updating tournament records...")
+    msg.http(challongeApi+"/tournaments/"+tournamentHash+".json?include_matches=1&include_participants=1")
+        .get() (err, res, body) ->
+          try
+            json = JSON.parse(body)
+            matches = json.tournament.matches
+            players = json.tournament.participants
+          catch error
+            msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
+
 class Poll
 
   constructor: (@robot) ->
@@ -423,17 +434,6 @@ class Poll
       @poll.betChoices[user.name] = number - 1
       poll = @poll
       msg.send("#{user.name} bet #{bet} on “#{votedAnswer.text}”")
-
-fetchTournament: (msg) ->
-    msg.send("Updating tournament records...")
-    msg.http(challongeApi+"/tournaments/"+tournamentHash+".json?include_matches=1&include_participants=1")
-        .get() (err, res, body) ->
-          try
-            json = JSON.parse(body)
-            matches = json.tournament.matches
-            players = json.tournament.participants
-          catch error
-            msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
 
 lockBets = (msg) ->
     betLocked = true
