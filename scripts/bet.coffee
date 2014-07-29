@@ -236,8 +236,8 @@ class Poll
     this.fetchTournament(msg)
     for match in matches then do (match) =>
       if match.match.state == "open"
-        playerOne = this.getPlayer(msg, match.match.player1_id)
-        playerTwo = this.getPlayer(msg, match.match.player2_id)
+        playerOne = this.getPlayer(msg, match.match.player1_id)[0]
+        playerTwo = this.getPlayer(msg, match.match.player2_id)[0]
         msg.send "Match #{match.match.identifier}: #{playerOne.name} vs. #{playerTwo.name}"
       else
         state = match.match.state
