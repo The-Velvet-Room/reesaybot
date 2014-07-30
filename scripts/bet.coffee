@@ -323,7 +323,7 @@ class Poll
     return msg.send("Sorry, you don't have permissions to declare a winner, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
 
     poll = @poll
-    victorIndex = winnerIndex
+    victorIndex = winnerIndex-1
     @poll.victor = @poll.answers[victorIndex].text
 
 
