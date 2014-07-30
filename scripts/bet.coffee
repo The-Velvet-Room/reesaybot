@@ -308,7 +308,7 @@ class Poll
       watchedMatch = getMatch(msg, currentMatchIdentifier)
       if watchedMatch[0].match.state == "complete"
         winnerIndex = 1
-        winnerIndex = 2 if watchedMatch.match.winner_id == watchedMatch.match.player2_id
+        winnerIndex = 2 if watchedMatch[0].match.winner_id == watchedMatch[0].match.player2_id
         this.endAutoPoll(msg, winnerIndex)
       else
         lulz = true
