@@ -38,6 +38,8 @@ tournamentHash = ''
 matches = []
 players = []
 autoUpdate = false
+currentMatchIdentifier = ''
+currentMatchOver = false
 
 leaderboardContents = (name, points) ->
 
@@ -236,6 +238,10 @@ class Poll
   getUser: (msg) ->
     msg.message.user
 
+  getMatch: (msg, identifier) ->
+    matches.filter (match) ->
+      match.match.identifier == identifier
+
   # Poll management
   createPoll: (msg) =>
     return msg.send("Sorry, you don't have permissions to start a bet, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
@@ -266,18 +272,27 @@ class Poll
   # Poll management
   createAutoPoll: (msg) =>
     return msg.send("Sorry, you don't have permissions to start a bet, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
-    answers = this.createAnswers(msg.match[1])
+    currentMatchIdentifier = msg.match[1]
+    betMatch = this.getMatch(msg, currentMatchIdentifier)
+    playerOne = this.getPlayer(msg, betMatch[0].match.player1_id)
+    playerTwo = this.getPlayer(msg, betMatch[0].match.player2_id)
+    betStr = "#{playerOne[0].participant.name},#{playerTwo[0].participant.name}"
+    answers = this.createAnswers(betStr)
     return msg.send('Please provide 2 participants!') if answers.length != 2
 
     user = this.getUser(msg)
     betLocked = false
     @poll = { user: user, question: "", answers: answers, cancelled: 0, voters: {}, bets: {}, betChoices: {} }
 
-    msg.send """#{user.name} started a bet!
+    msg.send """#{user.name} started an automated bet!
     Bet on a participant by saying: bet <number of choice> <value to bet>
     #{this.printAnswers()}
     Bets will lock in 60 seconds.
+    The winner will be fetched when the Challonge bracket is updated.
     """
+    autoupdate = true
+    currentMatchOver = false
+
     setTimeout ->
       msg.send("30 seconds remaining to bet!") if !betLocked
     , 30000
@@ -289,6 +304,49 @@ class Poll
     setTimeout ->
       lockBets(msg) if !betLocked
     , 60000
+
+    setInterval ->
+      fetchTournament(msg) if autoupdate
+      watchedMatch = this.getMatch(msg, currentMatchIdentifier)
+      if watchedMatch.match.state == "complete"
+        winnerIndex = 1
+        winnerIndex = 2 if watchedMatch.match.winner_id == watchedMatch.match.player2_id
+        this.endAutoPoll(msg, winnerIndex)
+      else
+        lulz = true
+      
+    , 30000
+
+  endAutoPoll: (msg, winnerIndex) =>
+    return msg.send('There’s currently no bet to end.') unless @poll
+    return msg.send('Sorry, bets are still able to be made.') unless betLocked
+    return msg.send("Sorry, you don't have permissions to declare a winner, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
+
+    poll = @poll
+    victorIndex = winnerIndex
+    @poll.victor = @poll.answers[victorIndex].text
+
+
+    msg.send """Alright everyone! Here are the results!
+    #{this.printResults(@poll)}
+    Payouts will now be distributed.
+    The leaderboard will be updated shortly: #{leaderboardUrl}
+    """
+
+    for username in Object.keys(@poll.betChoices)
+      if @poll.betChoices[username] is victorIndex
+        payoutRatio = (@poll.bets[username]) / (@poll.answers[victorIndex].totalPot)
+        payout = (payoutRatio * @poll.answers[0].totalPot).toFixed 0
+        payout = (payoutRatio * @poll.answers[1].totalPot).toFixed 0 if victorIndex == 0
+        payout = 1 if payout < 1
+        payout = 1 if payout > @poll.answers[0].totalPot + @poll.answers[1].totalPot
+        awardPoints(msg, username, payout)
+      else
+        removePoints(msg, username, @poll.bets[username])
+
+    @previousPoll = @poll
+    @poll = null
+    betLocked = false
 
   endPoll: (msg) =>
     return msg.send('There’s currently no bet to end.') unless @poll
@@ -434,7 +492,7 @@ fetchTournament = (msg) ->
             players = json.tournament.participants
           catch error
             msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
-            
+
 lockBets = (msg) ->
     betLocked = true
     msg.send('Alright everyone! Bets are locked! View bets here: http://reesaybot.herokuapp.com/points/current-bet')
