@@ -39,7 +39,6 @@ matches = []
 players = []
 autoUpdate = false
 currentMatchIdentifier = ''
-currentMatchOver = false
 
 leaderboardContents = (name, points) ->
 
@@ -291,7 +290,6 @@ class Poll
     The winner will be fetched when the Challonge bracket is updated.
     """
     autoupdate = true
-    currentMatchOver = false
 
     setTimeout ->
       msg.send("30 seconds remaining to bet!") if !betLocked
@@ -307,7 +305,7 @@ class Poll
 
     setInterval ->
       fetchTournament(msg) if autoupdate
-      watchedMatch = this.getMatch(msg, currentMatchIdentifier)
+      watchedMatch = getMatch(msg, currentMatchIdentifier)
       if watchedMatch.match.state == "complete"
         winnerIndex = 1
         winnerIndex = 2 if watchedMatch.match.winner_id == watchedMatch.match.player2_id
@@ -347,6 +345,7 @@ class Poll
     @previousPoll = @poll
     @poll = null
     betLocked = false
+    autoupdate = false
 
   endPoll: (msg) =>
     return msg.send('There’s currently no bet to end.') unless @poll
@@ -522,3 +521,7 @@ removePoints = (msg, username, pts) ->
 
 isAdmin = (term) ->
     admins.indexOf(term) isnt -1
+
+getMatch = (msg, identifier) ->
+    matches.filter (match) ->
+      match.match.identifier == identifier
