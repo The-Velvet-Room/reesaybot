@@ -306,7 +306,7 @@ class Poll
     setInterval ->
       fetchTournament(msg) if autoupdate
       watchedMatch = getMatch(msg, currentMatchIdentifier)
-      if watchedMatch.match.state == "complete"
+      if watchedMatch[0].match.state == "complete"
         winnerIndex = 1
         winnerIndex = 2 if watchedMatch.match.winner_id == watchedMatch.match.player2_id
         this.endAutoPoll(msg, winnerIndex)
