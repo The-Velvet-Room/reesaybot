@@ -157,6 +157,9 @@ module.exports = (robot) ->
       msg.send 'The tournament for automated betting is now set to '+tournamentHash
       fetchTournament(msg)
 
+  robot.respond /update tournament/i, (msg) ->
+    fetchTournament(msg)
+
   robot.respond /leaderboard/i, (msg) ->
       msg.send leaderboardUrl
 
@@ -316,7 +319,7 @@ class Poll
       else
         lulz = true
       
-    , 30000
+    , 45000
 
   endAutoPoll: (msg, winnerIndex) =>
     return msg.send('There’s currently no bet to end.') unless @poll
@@ -486,7 +489,7 @@ class Poll
       msg.send("#{user.name} bet #{bet} on “#{votedAnswer.text}”")
 
 fetchTournament = (msg) ->
-    msg.send("Updating tournament records...")
+    msg.send("Fetching the latest tournament data from Challonge...")
     msg.http(challongeApi+"/tournaments/"+tournamentHash+".json?include_matches=1&include_participants=1")
         .get() (err, res, body) ->
           try
