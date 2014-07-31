@@ -38,6 +38,7 @@ tournamentHash = ''
 matches = []
 players = []
 autoUpdate = false
+timeoutId = null
 currentMatchIdentifier = ''
 
 leaderboardContents = (name, points) ->
@@ -305,10 +306,10 @@ class Poll
 
     self = this
 
-    setInterval ->
+    timeoutId = setInterval ->
       fetchTournament(msg) if autoupdate
       watchedMatch = getMatch(msg, currentMatchIdentifier)
-      if watchedMatch[0].match.state == "complete"
+      if watchedMatch[0].match.state == "complete" and autoupdate
         winnerIndex = 1
         winnerIndex = 2 if watchedMatch[0].match.winner_id == watchedMatch[0].match.player2_id
         self.endAutoPoll(msg, winnerIndex)
@@ -348,6 +349,7 @@ class Poll
     @poll = null
     betLocked = false
     autoupdate = false
+    clearInterval timeoutId
 
   endPoll: (msg) =>
     return msg.send('There’s currently no bet to end.') unless @poll
