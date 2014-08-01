@@ -256,7 +256,7 @@ class Poll
     @poll = { user: user, question: "", answers: answers, cancelled: 0, voters: {}, bets: {}, betChoices: {} }
 
     msg.send """#{user.name} started a bet!
-    Bet on a participant by saying: bet <number of choice> <value to bet>
+    Bet on a participant by saying: bet (number of choice) (value to bet)
     #{this.printAnswers()}
     Bets will lock in 60 seconds.
     """
@@ -288,7 +288,7 @@ class Poll
     @poll = { user: user, question: "", answers: answers, cancelled: 0, voters: {}, bets: {}, betChoices: {} }
 
     msg.send """#{user.name} started an automated bet!
-    Bet on a participant by saying: bet <number of choice> <value to bet>
+    Bet on a participant by saying: bet (number of choice) (value to bet)
     #{this.printAnswers()}
     Bets will lock in 60 seconds.
     The winner will be fetched when the Challonge bracket is updated.
@@ -415,7 +415,7 @@ class Poll
     # Errors
     return msg.send('Sorry, there’s no pending bet at the moment.') unless @poll
     return msg.send('Sorry! Bets are currently locked!') if betLocked
-    return msg.send('Hey! You don\'t have that many points!') if bet > points[user.name]
+    return msg.send('Hey! You don\'t have that many points! You only have '+points[user.name]+' points!') if bet > points[user.name]
     return msg.send("Invalid option! There are only #{@poll.answers.length} participants.") if number > @poll.answers.length
     return msg.send("Invalid option! There are only #{@poll.answers.length} participants.") if number <= 0
     return msg.send("That\'s an invalid bet amount!") if bet <= 0
