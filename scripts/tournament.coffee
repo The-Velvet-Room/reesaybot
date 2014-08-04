@@ -41,6 +41,21 @@ autoUpdate = false
 timeoutId = null
 currentMatchIdentifier = ''
 
+#File Vars
+gameName = ''
+leftPlayer = ''
+rightPlayer = ''
+matchName = ''
+
+#Dropbox Vars
+dropboxAuthToken = process.env.DROPBOX_ACCESS_TOKEN
+dropboxApi = 'https://api-content.dropbox.com/1/files_put/auto'
+matchNameFilePath = '/Smash Text Files/MatchName.txt'
+leftPlayerNameFilePath = '/Smash Text Files/LeftSidePlayers.txt'
+leftSideScoreFilePath = '/Smash Text Files/LeftSideScore.txt'
+rightPlayerNameFilePath = '/Smash Text Files/RightSidePlayers.txt'
+rightPlayerScoreFilePath = '/Smash Text Files/RightSidePlayers.txt'
+
 leaderboardContents = (name, points) ->
 
   """
@@ -221,6 +236,8 @@ class Poll
     @robot.hear /all in ([0-2]*)/i, this.allInVote
     @robot.respond /show previous bets/i, this.showPreviousPoll
     @robot.hear /tournament bet (.*)/i, this.createAutoPoll
+    @robot.hear /stream match (.*)/i, this.setMatchInformation
+    @robot.hear /swap names/i, this.swapMatchInformation
     @robot.respond /matches/i, this.getUpcomingMatches
 
   getUpcomingMatches: (msg) =>
@@ -320,6 +337,97 @@ class Poll
         lulz = true
       
     , 45000
+
+  setMatchInformation: (msg) =>
+    return msg.send("Sorry, you don't have permissions to start a bet, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
+    currentMatchIdentifier = msg.match[1]
+    currentMatch = this.getMatch(msg, currentMatchIdentifier)
+    playerOne = this.getPlayer(msg, betMatch[0].match.player1_id)
+    leftPlayer = playerOne[0].participant.name
+    playerTwo = this.getPlayer(msg, betMatch[0].match.player2_id)
+    rightPlayer = playerTwo[0].participant.name
+    matchName = '#{gameName} - Round #{currentMatch[0].match.round}'
+
+    #Match Name
+    msg.http(dropboxApi+matchNameFilePath+"?access_token="+dropboxAuthToken)
+        .headers('Content-Length': matchName.length)
+        .put(matchName) (err, res, body) ->
+          try
+            json = body
+          catch error
+            msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
+
+    #Left Side
+    msg.http(dropboxApi+leftPlayerNameFilePath+"?access_token="+dropboxAuthToken)
+        .headers('Content-Length': leftPlayer.length)
+        .put(leftPlayer) (err, res, body) ->
+          try
+            json = body
+          catch error
+            msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
+    msg.http(dropboxApi+leftSideScoreFilePath+"?access_token="+dropboxAuthToken)
+        .headers('Content-Length': 1)
+        .put("0") (err, res, body) ->
+          try
+            json = body
+          catch error
+            msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
+
+    #Right Side
+    msg.http(dropboxApi+rightPlayerNameFilePath+"?access_token="+dropboxAuthToken)
+        .headers('Content-Length': rightPlayer.length)
+        .put(rightPlayer) (err, res, body) ->
+          try
+            json = body
+          catch error
+            msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
+    msg.http(dropboxApi+rightSideScoreFilePath+"?access_token="+dropboxAuthToken)
+        .headers('Content-Length': 1)
+        .put("0") (err, res, body) ->
+          try
+            json = body
+          catch error
+            msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
+
+    msg.send('The match was updated successfully! Dropbox will sync the changes soon, Senpai!')
+
+  swapMatchInformation: (msg) =>
+    return msg.send("Sorry, you don't have permissions to use this command, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
+    currentMatch = this.getMatch(msg, currentMatchIdentifier)
+    playerOne = this.getPlayer(msg, betMatch[0].match.player1_id)
+    rightPlayer = playerOne[0].participant.name
+    playerTwo = this.getPlayer(msg, betMatch[0].match.player2_id)
+    leftPlayer = playerTwo[0].participant.name
+    matchName = '#{gameName} - Round #{currentMatch[0].match.round}'
+
+    #Match Name
+    msg.http(dropboxApi+matchNameFilePath+"?access_token="+dropboxAuthToken)
+        .headers('Content-Length': matchName.length)
+        .put(matchName) (err, res, body) ->
+          try
+            json = body
+          catch error
+            msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
+
+    #Left Side
+    msg.http(dropboxApi+leftPlayerNameFilePath+"?access_token="+dropboxAuthToken)
+        .headers('Content-Length': leftPlayer.length)
+        .put(leftPlayer) (err, res, body) ->
+          try
+            json = body
+          catch error
+            msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
+
+    #Right Side
+    msg.http(dropboxApi+rightPlayerNameFilePath+"?access_token="+dropboxAuthToken)
+        .headers('Content-Length': rightPlayer.length)
+        .put(rightPlayer) (err, res, body) ->
+          try
+            json = body
+          catch error
+            msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
+
+    msg.send('The name swap was successful! Dropbox will sync the changes soon, Senpai!')
 
   endAutoPoll: (msg, winnerIndex) =>
     return msg.send('There’s currently no bet to end.') unless @poll
@@ -494,6 +602,7 @@ fetchTournament = (msg) ->
         .get() (err, res, body) ->
           try
             json = JSON.parse(body)
+            gameName = json.tournament.game_name
             matches = json.tournament.matches
             players = json.tournament.participants
           catch error
