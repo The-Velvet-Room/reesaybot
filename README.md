@@ -10,9 +10,10 @@ Notable Features
 =========
 * Saltybet style betting
 * Interaction with the Twitch.tv API (Checking viewers, checking followers, changing game/status, etc.)
+* Interaction with the Challonge API
 
 TODO
 =========
-* Interact with the challonge API
+* Interact with the Dropbox API and coordinate with Challonge
 * SRL style Racebot features (start race, stop race, participants, race rating, etc.)
 * World Record fetching
