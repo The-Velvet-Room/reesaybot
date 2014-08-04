@@ -54,7 +54,7 @@ matchNameFilePath = '/Smash Text Files/MatchName.txt'
 leftPlayerNameFilePath = '/Smash Text Files/LeftSidePlayers.txt'
 leftSideScoreFilePath = '/Smash Text Files/LeftSideScore.txt'
 rightPlayerNameFilePath = '/Smash Text Files/RightSidePlayers.txt'
-rightPlayerScoreFilePath = '/Smash Text Files/RightSidePlayers.txt'
+rightSideScoreFilePath = '/Smash Text Files/RightSideScore.txt'
 
 leaderboardContents = (name, points) ->
 
@@ -346,7 +346,7 @@ class Poll
     leftPlayer = playerOne[0].participant.name
     playerTwo = this.getPlayer(msg, currentMatch[0].match.player2_id)
     rightPlayer = playerTwo[0].participant.name
-    matchName = '#{gameName} - Round #{currentMatch[0].match.round}'
+    matchName = "#{gameName} - Round #{currentMatch[0].match.round}"
 
     #Match Name
     msg.http(dropboxApi+matchNameFilePath+"?access_token="+dropboxAuthToken)
@@ -398,7 +398,7 @@ class Poll
     rightPlayer = playerOne[0].participant.name
     playerTwo = this.getPlayer(msg, currentMatch[0].match.player2_id)
     leftPlayer = playerTwo[0].participant.name
-    matchName = '#{gameName} - Round #{currentMatch[0].match.round}'
+    matchName = "#{gameName} - Round #{currentMatch[0].match.round}"
 
     #Match Name
     msg.http(dropboxApi+matchNameFilePath+"?access_token="+dropboxAuthToken)
