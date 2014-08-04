@@ -339,12 +339,12 @@ class Poll
     , 45000
 
   setMatchInformation: (msg) =>
-    return msg.send("Sorry, you don't have permissions to start a bet, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
+    return msg.send("Sorry, you don't have permissions to use this command, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
     currentMatchIdentifier = msg.match[1]
     currentMatch = this.getMatch(msg, currentMatchIdentifier)
-    playerOne = this.getPlayer(msg, betMatch[0].match.player1_id)
+    playerOne = this.getPlayer(msg, currentMatch[0].match.player1_id)
     leftPlayer = playerOne[0].participant.name
-    playerTwo = this.getPlayer(msg, betMatch[0].match.player2_id)
+    playerTwo = this.getPlayer(msg, currentMatch[0].match.player2_id)
     rightPlayer = playerTwo[0].participant.name
     matchName = '#{gameName} - Round #{currentMatch[0].match.round}'
 
@@ -394,9 +394,9 @@ class Poll
   swapMatchInformation: (msg) =>
     return msg.send("Sorry, you don't have permissions to use this command, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
     currentMatch = this.getMatch(msg, currentMatchIdentifier)
-    playerOne = this.getPlayer(msg, betMatch[0].match.player1_id)
+    playerOne = this.getPlayer(msg, currentMatch[0].match.player1_id)
     rightPlayer = playerOne[0].participant.name
-    playerTwo = this.getPlayer(msg, betMatch[0].match.player2_id)
+    playerTwo = this.getPlayer(msg, currentMatch[0].match.player2_id)
     leftPlayer = playerTwo[0].participant.name
     matchName = '#{gameName} - Round #{currentMatch[0].match.round}'
 
