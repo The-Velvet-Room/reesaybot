@@ -14,6 +14,11 @@
 #   bet (choiceIndex) (amount) - bet a certain amount on the choice. Choice index is either 1 or 2
 #   hubot how many points does (user) have? - Shows user's points
 #   all in (choice) - Bet all your available points on (choice)
+#   ADMIN - hubot set tournament
+#   ADMIN - hubot matches
+#   ADMIN - hubot tournament bet (letter)
+#   ADMIN - hubot stream match (letter)
+#   ADMIN - hubot swap names
 #
 # Author:
 #   Camtendo
