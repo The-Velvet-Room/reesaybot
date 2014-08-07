@@ -14,6 +14,7 @@
 #   bet (choiceIndex) (amount) - bet a certain amount on the choice. Choice index is either 1 or 2
 #   hubot how many points does (user) have? - Shows user's points
 #   all in (choice) - Bet all your available points on (choice)
+#   bracket - hubot will show the bracket for the available tournament if possible
 #   ADMIN - hubot set tournament
 #   ADMIN - hubot matches
 #   ADMIN - hubot tournament bet (letter)
@@ -182,6 +183,12 @@ module.exports = (robot) ->
 
   robot.respond /leaderboard/i, (msg) ->
       msg.send leaderboardUrl
+
+  robot.hear /bracket/i, (msg) ->
+    return msg.send('If you are asking about a bracket for our tournament, I don\'t know what it is.') if tournamentHash == ''
+    return msg.send('challonge.com/'+tournamentHash) if tournamentHash.indexOf('-') == -1
+    split = tournamentHash.split '-'
+    msg.send(''+split[0]+'.challonge.com/'+split[1])
 
   robot.respond /toggle autoupdate/i, (msg) ->
       return msg.send("Sorry, you don't have permissions to edit that variable, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
