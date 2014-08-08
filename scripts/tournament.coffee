@@ -630,14 +630,14 @@ fetchTournament = (msg) ->
                 loser = this.getPlayer(msg, match.match.loser_id)
                 #msg.send "DEBUG #{Util.inspect(playerOne)}"
                 matchHistoryString += "Match #{match.match.identifier}: #{winner[0].participant.name} defeated #{loser[0].participant.name} #{match.match.scores_csv} - "
-                #Push to Dropbox
-                msg.http(dropboxApi+matchHistoryFilePath+"?access_token="+dropboxAuthToken)
-                    .headers('Content-Length': matchHistoryString.length)
-                    .put(matchHistoryString) (err, res, body) ->
-                      try
-                        json = body
-                      catch error
-                        msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
+            #Push to Dropbox
+            msg.http(dropboxApi+matchHistoryFilePath+"?access_token="+dropboxAuthToken)
+                .headers('Content-Length': matchHistoryString.length)
+                .put(matchHistoryString) (err, res, body) ->
+                  try
+                    json = body
+                  catch error
+                    msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
           catch error
             msg.send "Looks like the request failed Senpai. error="+error+" res="+res
 
