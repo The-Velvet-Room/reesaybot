@@ -63,7 +63,7 @@ leftPlayerNameFilePath = '/Smash Text Files/LeftSidePlayers.txt'
 leftSideScoreFilePath = '/Smash Text Files/LeftSideScore.txt'
 rightPlayerNameFilePath = '/Smash Text Files/RightSidePlayers.txt'
 rightSideScoreFilePath = '/Smash Text Files/RightSideScore.txt'
-matchHistoryFilePath = '/Smash Text Files'
+matchHistoryFilePath = '/Smash Text Files/MatchHistory.txt'
 
 leaderboardContents = (name, points) ->
 
