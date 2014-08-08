@@ -627,9 +627,9 @@ fetchTournament = (msg) ->
             for match in matches then do (match) =>
               if match.match.state == "complete"
                 winner = getPlayer(msg, match.match.winner_id)
-                winnerName = winner[0].participant.name ? winner[0].participant.name : winner[0].participant.challonge_username
+                winnerName = if winner[0].participant.name then winner[0].participant.name else winner[0].participant.challonge_username
                 loser = getPlayer(msg, match.match.loser_id)
-                loserName = loser[0].participant.name ? loser[0].participant.name : loser[0].participant.challonge_username
+                loserName = if loser[0].participant.name then loser[0].participant.name else loser[0].participant.challonge_username
                 #msg.send "DEBUG #{Util.inspect(playerOne)}"
                 matchHistoryString = "#{matchHistoryString}Match #{match.match.identifier}: #{winnerName} defeated #{loserName} #{match.match.scores_csv} - "
               else
