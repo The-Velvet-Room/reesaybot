@@ -40,6 +40,8 @@ currentBetUrl = 'http://reesaybot.herokuapp.com/points/current-bet'
 apiKey = process.env.CHALLONGE_API_KEY
 challongeApi = 'https://Camtendo:'+apiKey+'@api.challonge.com/v1'
 tournamentHash = ''
+tournamentName = ''
+participantCount = ''
 matches = []
 players = []
 autoUpdate = false
@@ -60,6 +62,7 @@ leftPlayerNameFilePath = '/Smash Text Files/LeftSidePlayers.txt'
 leftSideScoreFilePath = '/Smash Text Files/LeftSideScore.txt'
 rightPlayerNameFilePath = '/Smash Text Files/RightSidePlayers.txt'
 rightSideScoreFilePath = '/Smash Text Files/RightSideScore.txt'
+matchHistoryFilePath = '/Smash Text Files'
 
 leaderboardContents = (name, points) ->
 
@@ -608,8 +611,26 @@ fetchTournament = (msg) ->
           try
             json = JSON.parse(body)
             gameName = json.tournament.game_name
+            tournamentName = json.tournament.name
+            participantCount = json.tournament.participants_count
             matches = json.tournament.matches
             players = json.tournament.participants
+            #Set match history
+            matchHistoryString = ''+tournamentName+' - '+participantCount+' participants - '
+            for match in matches then do (match) =>
+              if match.match.state == "complete"
+                winner = this.getPlayer(msg, match.match.winner_id)
+                loser = this.getPlayer(msg, match.match.loser_id)
+                #msg.send "DEBUG #{Util.inspect(playerOne)}"
+                matchHistoryString += "Match #{match.match.identifier}: #{winner[0].participant.name} defeated #{loser[0].participant.name} #{match.match.scores_csv} - "
+                #Push to Dropbox
+                msg.http(dropboxApi+matchHistoryFilePath+"?access_token="+dropboxAuthToken)
+                    .headers('Content-Length': matchHistoryString.length)
+                    .put(matchHistoryString) (err, res, body) ->
+                      try
+                        json = body
+                      catch error
+                        msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
           catch error
             msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
 
