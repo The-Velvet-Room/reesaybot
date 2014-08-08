@@ -624,7 +624,8 @@ fetchTournament = (msg) ->
             players = json.tournament.participants
             #Set match history
             matchHistoryString = ''+tournamentName+' - '+participantCount+' participants - '
-            for match in matches then do (match) =>
+            matchesReversed = matches.reverse()
+            for match in matchesReversed then do (match) =>
               if match.match.state == "complete"
                 winner = getPlayer(msg, match.match.winner_id)
                 winnerName = if winner[0].participant.name then winner[0].participant.name else winner[0].participant.challonge_username
