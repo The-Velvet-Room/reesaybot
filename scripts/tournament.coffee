@@ -629,7 +629,7 @@ fetchTournament = (msg) ->
                 winner = this.getPlayer(msg, match.match.winner_id)
                 loser = this.getPlayer(msg, match.match.loser_id)
                 #msg.send "DEBUG #{Util.inspect(playerOne)}"
-                matchHistoryString += "Match #{match.match.identifier}: #{winner[0].participant.name} defeated #{loser[0].participant.name} #{match.match.scores_csv} - "
+                matchHistoryString = "#{matchHistoryString}Match #{match.match.identifier}: #{winner[0].participant.name} defeated #{loser[0].participant.name} #{match.match.scores_csv} - "
               else
                 state = match.match.state
             #Push to Dropbox
