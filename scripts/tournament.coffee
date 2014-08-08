@@ -178,7 +178,7 @@ module.exports = (robot) ->
   robot.respond /set tournament (.*)/i, (msg) ->
       return msg.send("Sorry, you don't have permissions to edit that variable, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
       tournamentHash = msg.match[1]
-      msg.send 'The tournament for automated betting is now set to '+tournamentHash
+      msg.send 'Alright Senpai! The tournament I will use is now set to '+tournamentHash
       fetchTournament(msg)
 
   robot.respond /update tournament/i, (msg) ->
@@ -639,7 +639,7 @@ fetchTournament = (msg) ->
                       catch error
                         msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
           catch error
-            msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
+            msg.send "Looks like the request failed Senpai. error="+error+" res="+res
 
 lockBets = (msg) ->
     betLocked = true
