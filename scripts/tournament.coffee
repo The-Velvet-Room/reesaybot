@@ -626,10 +626,12 @@ fetchTournament = (msg) ->
             matchHistoryString = ''+tournamentName+' - '+participantCount+' participants - '
             for match in matches then do (match) =>
               if match.match.state == "complete"
+                msg.send("Loading info for match #{match.match.identifier}")
                 winner = this.getPlayer(msg, match.match.winner_id)
                 loser = this.getPlayer(msg, match.match.loser_id)
                 #msg.send "DEBUG #{Util.inspect(playerOne)}"
                 matchHistoryString = "#{matchHistoryString}Match #{match.match.identifier}: #{winner[0].participant.name} defeated #{loser[0].participant.name} #{match.match.scores_csv} - "
+                msg.send matchHistoryString
               else
                 state = match.match.state
             #Push to Dropbox
