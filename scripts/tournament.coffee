@@ -27,7 +27,7 @@
 Util = require 'util'
 
 #Betting Vars
-admins = ["camtendo", "t0asterb0t", "hollyfrass"]
+admins = ["camtendo", "t0asterb0t", "hollyfrass", "grandpajakelol"]
 points = {}
 highestPoints = {}
 totalPot = {}
@@ -46,6 +46,7 @@ participantCount = ''
 matches = []
 players = []
 autoUpdate = false
+silentUpdate = false
 timeoutId = null
 currentMatchIdentifier = ''
 
@@ -197,6 +198,11 @@ module.exports = (robot) ->
       return msg.send("Sorry, you don't have permissions to edit that variable, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
       autoUpdate = !autoUpdate 
       msg.send 'Automatic updating is now set to '+autoUpdate
+
+  robot.respond /toggle silent update/i, (msg) ->
+      return msg.send("Sorry, you don't have permissions to edit that variable, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
+      silentUpdate = !silentUpdate 
+      msg.send 'Silent updating is now set to '+silentUpdate
 
   robot.respond /how many points does (.*?) have\??/i, (msg) ->
       username = msg.match[1].toLowerCase()
@@ -358,9 +364,9 @@ class Poll
     currentMatchIdentifier = msg.match[1]
     currentMatch = this.getMatch(msg, currentMatchIdentifier)
     playerOne = this.getPlayer(msg, currentMatch[0].match.player1_id)
-    leftPlayer = playerOne[0].participant.name
+    leftPlayer = if playerOne[0].participant.name then playerOne[0].participant.name else playerOne[0].participant.username
     playerTwo = this.getPlayer(msg, currentMatch[0].match.player2_id)
-    rightPlayer = playerTwo[0].participant.name
+    rightPlayer = if playerTwo[0].participant.name then playerTwo[0].participant.name else playerTwo[0].participant.username
     matchName = "#{gameName} - Round #{currentMatch[0].match.round}"
 
     #Match Name
@@ -410,9 +416,9 @@ class Poll
     return msg.send("Sorry, you don't have permissions to use this command, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
     currentMatch = this.getMatch(msg, currentMatchIdentifier)
     playerOne = this.getPlayer(msg, currentMatch[0].match.player1_id)
-    rightPlayer = playerOne[0].participant.name
+    rightPlayer = if playerOne[0].participant.name then playerOne[0].participant.name else playerOne[0].participant.username
     playerTwo = this.getPlayer(msg, currentMatch[0].match.player2_id)
-    leftPlayer = playerTwo[0].participant.name
+    leftPlayer = if playerTwo[0].participant.name then playerTwo[0].participant.name else playerTwo[0].participant.username
     matchName = "#{gameName} - Round #{currentMatch[0].match.round}"
 
     #Match Name
@@ -612,7 +618,7 @@ class Poll
       msg.send("#{user.name} bet #{bet} on “#{votedAnswer.text}”")
 
 fetchTournament = (msg) ->
-    msg.send("Fetching the latest tournament data from Challonge...")
+    msg.send("Fetching the latest tournament data from Challonge...") if !silentUpdate
     msg.http(challongeApi+"/tournaments/"+tournamentHash+".json?include_matches=1&include_participants=1")
         .get() (err, res, body) ->
           try
@@ -628,9 +634,9 @@ fetchTournament = (msg) ->
             for match in matchesReversed then do (match) =>
               if match.match.state == "complete"
                 winner = getPlayer(msg, match.match.winner_id)
-                winnerName = if winner[0].participant.name then winner[0].participant.name else winner[0].participant.challonge_username
+                winnerName = if winner[0].participant.name then winner[0].participant.name else winner[0].participant.username
                 loser = getPlayer(msg, match.match.loser_id)
-                loserName = if loser[0].participant.name then loser[0].participant.name else loser[0].participant.challonge_username
+                loserName = if loser[0].participant.name then loser[0].participant.name else loser[0].participant.username
                 #msg.send "DEBUG #{Util.inspect(playerOne)}"
                 matchHistoryString = "#{matchHistoryString}Match #{match.match.identifier}: #{winnerName} defeated #{loserName} #{match.match.scores_csv} - "
               else
