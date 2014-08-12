@@ -361,6 +361,7 @@ class Poll
 
   setMatchInformation: (msg) =>
     return msg.send("Sorry, you don't have permissions to use this command, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
+    fetchTournament(msg)
     currentMatchIdentifier = msg.match[1]
     currentMatch = this.getMatch(msg, currentMatchIdentifier)
     playerOne = this.getPlayer(msg, currentMatch[0].match.player1_id)
@@ -414,6 +415,7 @@ class Poll
 
   swapMatchInformation: (msg) =>
     return msg.send("Sorry, you don't have permissions to use this command, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
+    fetchTournament(msg)
     currentMatch = this.getMatch(msg, currentMatchIdentifier)
     playerOne = this.getPlayer(msg, currentMatch[0].match.player1_id)
     rightPlayer = if playerOne[0].participant.name then playerOne[0].participant.name else playerOne[0].participant.username
