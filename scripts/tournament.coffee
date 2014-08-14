@@ -1,11 +1,14 @@
 # Description:
+#   Makes use of the Challonge API for many tournament based functions.
 #   Allows betting in competitive based games similar to Saltybet.
+#   Also allows OBS management using the Dropbox API
 #
 # Dependencies:
 #   None
 #
 # Configuration:
 #   CHALLONGE_API_KEY
+#   DROPBOX_ACCESS_TOKEN
 #
 # Commands:
 #	  hubot leaderboard - Request the leaderboard url.
@@ -15,11 +18,13 @@
 #   hubot how many points does (user) have? - Shows user's points
 #   all in (choice) - Bet all your available points on (choice)
 #   bracket - hubot will show the bracket for the available tournament if possible
-#   ADMIN - hubot set tournament
-#   ADMIN - hubot matches
-#   ADMIN - hubot tournament bet (letter)
-#   ADMIN - hubot stream match (letter)
-#   ADMIN - hubot swap names
+#   ADMIN@ - (user) set points - explicitly set user's points
+#   ADMIN - hubot set tournament - set tournament for Challlonge related features
+#   ADMIN - hubot matches - Display upcoming matches
+#   ADMIN - hubot tournament bet (letter) - Begin automated bet using a given match
+#   ADMIN - hubot stream match (letter) - Set OBS display using a given match
+#   ADMIN - hubot swap names - swap users displayed on OBS. NOTE: This is idempotent. 
+#   ADMIN - hubot toggle silent update - Toggle notifications about a tourney being updated
 #
 # Author:
 #   Camtendo
