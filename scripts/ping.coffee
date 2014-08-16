@@ -11,7 +11,7 @@ module.exports = (robot) ->
   robot.respond /PING$/i, (msg) ->
     msg.send "PONG"
 
-  robot.hear /ECHO (.*)$/i, (msg) ->
+  robot.hear /~ECHO (.*)$/i, (msg) ->
     msg.send msg.match[1] if msg.match[1].substring(0,1) != '!'
 
   robot.respond /TIME$/i, (msg) ->
