@@ -30,6 +30,7 @@ module.exports = (robot) ->
       admins.indexOf(term) isnt -1
 
   robot.hear /who is streaming?/i, (msg) ->
+    return msg.send("Sorry, this command isn't ready for the public yet, #{msg.message.user.name}-Senpai.") if msg.message.user.name != "camtendo"
     msg.http(twitchApi+"/streams/followed")
         .headers('Accept': 'application/vnd.twitchtv.v2+json', 'Client-Id': clientId, 'Authorization': 'OAuth '+accessToken, 'Scope': 'user_read')
         .get() (err, res, body) ->
@@ -89,7 +90,7 @@ module.exports = (robot) ->
 
 
   robot.hear /game=(.*)?/i, (msg) ->
-    return msg.send("Sorry, you don't have permissions to change Camtendo's game, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
+    return msg.send("Sorry, you don't have permissions to change Camtendo's game, #{msg.message.user.name}-Senpai.") if msg.message.user.name != "camtendo"
     name = msg.message.user.name
     game = msg.match[1].substr(msg.match[1].indexOf("=") + 1)
     data = {"channel": {"game": game}}
@@ -106,7 +107,7 @@ module.exports = (robot) ->
             msg.send "Looks like the request failed Senpai. body="+body+" error="+error+" res="+res
 
   robot.hear /status=(.*)?/i, (msg) ->
-    return msg.send("Sorry, you don't have permissions to change Camtendo's status, #{msg.message.user.name}-Senpai.") if !isAdmin msg.message.user.name
+    return msg.send("Sorry, you don't have permissions to change Camtendo's status, #{msg.message.user.name}-Senpai.") if msg.message.user.name != "camtendo"
     name = msg.message.user.name
     status = msg.match[1].substr(msg.match[1].indexOf("=") + 1)
     data = {"channel": {"status": status}}
