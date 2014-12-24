@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#   hubot which do you prefer: <thing> or <thing> [.. or <thing>]?
+#   RESPOND hubot which do you prefer: (thing) or (thing) [.. or <thing>]?
 #
 # Author:
 #   ajacksified

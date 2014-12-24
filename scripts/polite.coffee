@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#
+#   RESPOND thanks, thank you, cheers, etc. - hubot replies to your courtesy
 # Author:
 #   dannymcc
 

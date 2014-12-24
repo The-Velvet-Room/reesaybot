@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#	What should I speedrun?
+#	HEAR What should I speedrun? - hubot will suggest a game for you
 #
 #
 # Author:

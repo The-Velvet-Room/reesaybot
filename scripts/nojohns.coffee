@@ -1,6 +1,14 @@
-
 # Description:
 #   Summons the wisdom of Reggie.
+#
+# Dependencies:
+#   None
+#
+# Configuration:
+#   None
+#
+# Commands:
+#   HEAR no johns
 #
 # Author:
 #   Brendan Smith

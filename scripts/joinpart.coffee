@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#   Reesaybot will listen for joins and parts and report them.
+#   PASSIVE Reesaybot will listen for admin joins and parts and report them.
 #
 # Author:
 #   Camtendo

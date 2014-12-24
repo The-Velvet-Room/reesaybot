@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#   hubot is <domain> up? - Checks if <domain> is up
+#   RESPOND hubot is <domain> up? - Checks if <domain> is up
 #
 # Author:
 #   jmhobbs

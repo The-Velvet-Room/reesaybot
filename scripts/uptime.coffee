@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#   hubot uptime - Outputs bot uptime
+#   HEAR uptime - Outputs bot uptime
 #
 # Author:
 #   whitman

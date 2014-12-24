@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#   pokefact - get a random pokefact!
+#   RESPOND hubot pokefact - get a random pokefact!
 #
 # Author:
 #   eliperkins

@@ -1,6 +1,17 @@
-# Call Me Maybe
+# Description:
+#   Call Me Maybe
 #
-# "call me maybe" anywhere
+# Dependencies:
+#   None
+#
+# Configuration:
+#   None
+#
+# Commands:
+#   HEAR "call me maybe"
+#
+# Author:
+#   unknown
 
 module.exports = (robot) ->
   robot.hear /.*i just met you.*/, (msg) ->

@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#   hubot chat - Tell hubot to make something fun to chat about
+#   HEAR bored - hubot will make something fun to chat about
 #
 # Author:
 #   GantMan

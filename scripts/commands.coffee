@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#   commands - Lists url to view all commands
+#   HEAR commands - Lists url to view all commands
 #
 # Author:
 #   Camtendo

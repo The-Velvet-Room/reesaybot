@@ -11,14 +11,14 @@
 #   DROPBOX_ACCESS_TOKEN
 #
 # Commands:
-#	  hubot leaderboard - Request the leaderboard url.
-#   my points - see your points
-#   (user) points - see (user's) points
-#   bet (choiceIndex) (amount) - bet a certain amount on the choice. Choice index is either 1 or 2
-#   hubot how many points does (user) have? - Shows user's points
-#   all in (choice) - Bet all your available points on (choice)
-#   bracket - hubot will show the bracket for the available tournament if possible
-#   ADMIN@ - (user) set points - explicitly set user's points
+#	  RESPOND hubot leaderboard - Request the leaderboard url.
+#   HEAR my points - see your points
+#   HEAR (user) points - see (user's) points
+#   HEAR bet (choiceIndex) (amount) - bet a certain amount on the choice. Choice index is either 1 or 2
+#   RESPOND hubot how many points does (user) have? - Shows user's points
+#   HEAR all in (choice) - Bet all your available points on (choice)
+#   HEAR bracket - hubot will show the bracket for the available tournament if possible
+#   @DEVONLY - (user) set points - explicitly set user's points
 #   ADMIN - hubot set tournament - set tournament for Challlonge related features
 #   ADMIN - hubot matches - Display upcoming matches
 #   ADMIN - hubot tournament bet (letter) - Begin automated bet using a given match

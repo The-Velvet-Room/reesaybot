@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#   alot - Shows a picture of an alot
+#   HEAR alot - Shows a picture of an alot
 #
 # Author:
 #   tbwIII

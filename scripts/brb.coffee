@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#   brb (or afk, or bbl)
+#   HEAR brb (or afk, or bbl)
 #
 # Author:
 #   jmhobbs

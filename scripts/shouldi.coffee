@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#   Should I (something) or (something else) - Encourages you to do stuff.
+#   HEAR Should I (something) or (something else) - Encourages you to do stuff.
 # 
 # Author:
 #   Camtendo

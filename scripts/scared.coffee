@@ -9,7 +9,7 @@
 #   None
 #
 # Commands:
-#   fear|afraid - Recite the Litany Against Fear
+#   HEAR fear|afraid - Recite the Litany Against Fear
 #
 # Author:
 #   wgibbs
