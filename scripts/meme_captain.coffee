@@ -6,7 +6,7 @@
 #
 # Commands:
 #   HEAR Y U NO (text) - Generates the Y U NO GUY with the bottom caption of (text)
-#   HEAR I don't always <something> but when i do (text) - Generates The Most Interesting man in the World
+#   HEAR I don't always (something) but when i do (text) - Generates The Most Interesting man in the World
 #   HEAR (text) (SUCCESS|NAILED IT) - Generates success kid with the top caption of (text)
 #   HEAR (text) ALL the (things) - Generates ALL THE THINGS
 #   HEAR (text) TOO DAMN (high) - Generates THE RENT IS TOO DAMN HIGH guy

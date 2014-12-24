@@ -10,7 +10,7 @@
 #
 # Commands:
 #   HEAR my viewers - Displays viewer count for whoever says this command
-#   HEAR current viewers for <channel> - Shows viewer count for <channel>
+#   HEAR current viewers for (channel) - Shows viewer count for (channel)
 #   HEAR my followers - Gives information about followers for the invoking user
 #   @DEVONLY status=YOUR_STATUS - Sets status for user. Requires TWITCH_ACCESS_TOKEN to be set.
 #   @DEVONLY game=YOUR_GAME - Sets game for user. Requires TWITCH_ACCESS_TOKEN to be set.

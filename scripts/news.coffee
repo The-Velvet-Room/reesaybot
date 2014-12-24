@@ -9,7 +9,7 @@
 #
 # Commands:
 #   RESPOND hubot news - Get the latest headlines
-#   RESPOND hubot news <topic> - Get the latest headlines for a specific topic
+#   RESPOND hubot news (topic) - Get the latest headlines for a specific topic
 #
 # Author:
 #   Matt McCormick
