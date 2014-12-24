@@ -18,9 +18,9 @@ admins =  process.env.ADMINS.split " " || [""]
 module.exports = (robot) ->
   robot.enter (msg) ->
   	  if msg.message.user.name.toLowerCase() isnt robot.name.toLowerCase()
-      	msg.send "Welcome to the channel, #{msg.message.user.name}-Senpai! I've loaded special commands for you!" if isAdmin msg.message.user.name
+      	msg.send "Welcome to the channel, #{msg.message.user.name}-Senpai! I've loaded special commands for you! TriHard" if isAdmin msg.message.user.name
       else
-      	msg.send "Heroku deployment successful. "+msg.robot.commands.length+" commands were loaded. Twitch Build Hash = "+uniqueId(16)
+      	msg.send "Whoops! I either crashed or restarted. OpieOP "+msg.robot.commands.length+" commands were loaded. Twitch Build Hash = "+uniqueId(16)
 
   #robot.leave (msg) ->
   #    msg.send "#{msg.message.user.name} left..."

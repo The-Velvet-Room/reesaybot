@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#   hubot whatis <term> - search the term on urbandictionary.com and get a random popular definition for the term.
+#   RESPOND hubot whatis <term> - search the term on urbandictionary.com and get a random popular definition for the term.
 #
 # Author:
 #   Kevin Qiu

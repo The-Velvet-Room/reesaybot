@@ -60,6 +60,12 @@ module.exports = (robot) ->
     emit = "<p>#{cmds.join '</p><p>'}</p>"
 
     emit = emit.replace /hubot/ig, "<b>#{robot.name}</b>"
+    emit = emit.replace /@DEVONLY/g, "<b>@DEVONLY: </b>"
+    emit = emit.replace /ADMIN/g, "<b>ADMIN: </b>"
+    emit = emit.replace /HEAR/g, "<b>HEAR: </b>"
+    emit = emit.replace /RESPOND/g, "<b>RESPOND: </b>"
+    emit = emit.replace /PRIVATE COMMAND/g, "<b>PRIVATE COMMAND: </b>"
+    emit = emit.replace /PASSIVE/g, "<b>PASSIVE: </b>"
 
     res.setHeader 'content-type', 'text/html'
     res.end helpContents robot.name, emit
