@@ -219,14 +219,14 @@ module.exports = (robot) ->
       points[username] ?= startingPoints
       msg.send username + ' has ' + points[username] + ' points'
 
-  robot.hear /(.*?) set points (.?)/i, (msg) ->
+  robot.respond /(.*?) set points (.?)/i, (msg) ->
       return msg.send("Sorry, you don't have permissions to override points, #{msg.message.user.name}-Senpai.") if msg.message.user.name != "camtendo"
       username = msg.match[1].toLowerCase()
       newPoints = msg.message.text.substr(msg.message.text.indexOf("points ") + 7)
       points[username] = 0
       awardPoints(msg, username, newPoints)
 
-  robot.hear /(.*?) set peak (.?)/i, (msg) ->
+  robot.respond /(.*?) set peak (.?)/i, (msg) ->
       return msg.send("Sorry, you don't have permissions to override peak points, #{msg.message.user.name}-Senpai.") if msg.message.user.name != "camtendo"
       username = msg.match[1].toLowerCase()
       newPoints = msg.message.text.substr(msg.message.text.indexOf("peak ") + 5)
@@ -261,9 +261,9 @@ class Poll
     @robot.hear /bet ([0-2]*) ([0-9]*)/i, this.vote
     @robot.hear /all in ([0-2]*)/i, this.allInVote
     @robot.respond /show previous bets/i, this.showPreviousPoll
-    @robot.hear /tournament bet (.*)/i, this.createAutoPoll
+    @robot.respond /tournament bet (.*)/i, this.createAutoPoll
     @robot.hear /stream match (.*)/i, this.setMatchInformation
-    @robot.hear /swap names/i, this.swapMatchInformation
+    @robot.respond /swap names/i, this.swapMatchInformation
     @robot.respond /matches/i, this.getUpcomingMatches
 
   getUpcomingMatches: (msg) =>
