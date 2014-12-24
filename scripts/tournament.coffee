@@ -32,7 +32,7 @@
 Util = require 'util'
 
 #Betting Vars
-admins = ["camtendo", "t0asterb0t", "hollyfrass", "grandpajakelol"]
+admins = ["camtendo", "t0asterb0t", "hollyfrass", "grandpajakelol", "freesaltines"]
 points = {}
 highestPoints = {}
 totalPot = {}
