@@ -13,7 +13,7 @@
 # Author:
 #   Camtendo
 
-admins = ["camtendo", "t0asterb0t", "hollyfrass", "grandpajakelol"]
+admins =  process.env.ADMINS.split " " || [""]
 
 module.exports = (robot) ->
   robot.enter (msg) ->

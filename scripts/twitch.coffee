@@ -19,7 +19,7 @@
 # Author:
 #   Camtendo
 
-admins = ["camtendo", "t0asterb0t", "hollyfrass"]
+admins =  process.env.ADMINS.split " " || [""]
 twitchApi = "https://api.twitch.tv/kraken"
 clientId = process.env.TWITCH_CLIENT_ID
 accessToken = process.env.TWITCH_ACCESS_TOKEN
