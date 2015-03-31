@@ -405,10 +405,6 @@ pokemon = [{"Name":"Bulbasaur","Type":"Grass","Type2":"Poison"},
 {"Name":"Rayquaza","Type":"Dragon","Type2":"Flying"},
 {"Name":"Jirachi","Type":"Steel","Type2":"Psychic"},
 {"Name":"Deoxys","Type":"Psychic"},
-{"Name":"Deoxys","Type":"Psychic"},
-{"Name":"Deoxys","Type":"Psychic"},
-{"Name":"Deoxys","Type":"Psychic"},
-{"Name":"Pokémon","Type":"Type"},
 {"Name":"Turtwig","Type":"Grass"},
 {"Name":"Grotle","Type":"Grass"},
 {"Name":"Torterra","Type":"Grass","Type2":"Ground"},
@@ -516,7 +512,6 @@ pokemon = [{"Name":"Bulbasaur","Type":"Grass","Type2":"Poison"},
 {"Name":"Heatran","Type":"Fire","Type2":"Steel"},
 {"Name":"Regigigas","Type":"Normal"},
 {"Name":"Giratina","Type":"Ghost","Type2":"Dragon"},
-{"Name":"Giratina","Type":"Ghost","Type2":"Dragon"},
 {"Name":"Cresselia","Type":"Psychic"},
 {"Name":"Phione","Type":"Water"},
 {"Name":"Manaphy","Type":"Water"},
@@ -552,7 +547,6 @@ pokemon = [{"Name":"Bulbasaur","Type":"Grass","Type2":"Poison"},
 {"Name":"Musharna","Type":"Psychic"},
 {"Name":"Pidove","Type":"Normal","Type2":"Flying"},
 {"Name":"Tranquill","Type":"Normal","Type2":"Flying"},
-{"Name":"Unfezant","Type":"Normal","Type2":"Flying"},
 {"Name":"Unfezant","Type":"Normal","Type2":"Flying"},
 {"Name":"Blitzle","Type":"Electric"},
 {"Name":"Zebstrika","Type":"Electric"},
@@ -759,14 +753,17 @@ pokemon = [{"Name":"Bulbasaur","Type":"Grass","Type2":"Poison"},
 {"Name":"Zygarde","Type":"Dragon","Type2":"Ground"},
 {"Name":"Diancie","Type":"Rock","Type2":"Fairy"},
 {"Name":"Hoopa","Type":"Psychic","Type2":"Ghost"},
-{"Name":"Hoopa","Type":"Psychic","Type2":"Dark"},
 {"Name":"Volcanion","Type":"Fire","Type2":"Water"}]
 
 module.exports = (robot) ->
   robot.hear /pokemon (.*)/i, (msg) ->
     pokemonName = msg.match[1]
     returnedPokemon = getPokemon(msg, pokemonName)
-    msg.send "Name: #{returnedPokemon[0].Name} Types: #{returnedPokemon[0].Type} #{returnedPokemon[0].Type2}"
+    if (returnedPokemon? and returnedPokemon)
+    	returnedPokemon[0].Type2 = returnedPokemon[0].Type2 ""
+    	msg.send "Name: #{returnedPokemon[0].Name} Types: #{returnedPokemon[0].Type} #{returnedPokemon[0].Type2}"
+    else
+    	msg.send "That doesn't seem to be a real Pokemon, Senpai! Did you make it up?"
 
 getPokemon = (msg, name) ->
     pokemon.filter (poke) ->
