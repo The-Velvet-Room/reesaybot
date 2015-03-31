@@ -759,7 +759,7 @@ module.exports = (robot) ->
   robot.hear /pokemon (.*)/i, (msg) ->
     pokemonName = msg.match[1]
     returnedPokemon = getPokemon(msg, pokemonName)
-    if (returnedPokemon? and returnedPokemon)
+    if (returnedPokemon? and returnedPokemon.length > 0)
     	returnedPokemon[0].Type2 = returnedPokemon[0].Type2 ? ""
     	msg.send "Name: #{returnedPokemon[0].Name} Types: #{returnedPokemon[0].Type} #{returnedPokemon[0].Type2}"
     else
