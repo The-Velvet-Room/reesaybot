@@ -701,7 +701,7 @@ pokemon = [{"Name":"Bulbasaur","Type":"Grass","Type2":"Poison"},
 {"Name":"Vivillon","Type":"Bug","Type2":"Flying"},
 {"Name":"Litleo","Type":"Fire","Type2":"Normal"},
 {"Name":"Pyroar","Type":"Fire","Type2":"Normal"},
-{"Name":"Flabébé","Type":"Fairy"},
+{"Name":"Flabebe","Type":"Fairy"},
 {"Name":"Floette","Type":"Fairy"},
 {"Name":"Florges","Type":"Fairy"},
 {"Name":"Skiddo","Type":"Grass"},
@@ -770,8 +770,10 @@ module.exports = (robot) ->
             damageMod = getDamageModifier(msg, type, returnedPokemon[0].Type) * getDamageModifier(msg, type, returnedPokemon[0].Type2)
             msg.send "Very weak to #{type}." if damageMod is 4
             msg.send "Weak to #{type}." if damageMod is 2
+            msg.send "Immune to #{type}" if damageMod is 0
             msg.send "Strong against #{type}." if damageMod is 0.5
             msg.send "Very strong against #{type}." if damageMod is 0.25
+        msg.send "Analysis complete! I hope I was helpful, Senpai!"
     else
         msg.send "That doesn't seem to be a real Pokemon, Senpai! Did you make it up?"
 
