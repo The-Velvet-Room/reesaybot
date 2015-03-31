@@ -765,6 +765,7 @@ module.exports = (robot) ->
     returnedPokemon = getPokemon(msg, pokemonName)
     if (returnedPokemon? and returnedPokemon.length > 0)
         returnedPokemon[0].Type2 = returnedPokemon[0].Type2 ? ""
+        msg.send "Beginning type analysis..."
         msg.send "Name: #{returnedPokemon[0].Name} Types: #{returnedPokemon[0].Type} #{returnedPokemon[0].Type2}"
         for type in types
             damageMod = getDamageModifier(msg, type, returnedPokemon[0].Type) * getDamageModifier(msg, type, returnedPokemon[0].Type2)
