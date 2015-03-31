@@ -1,20 +1,4 @@
-# Description:
-#   Rise will display type information about a given Pokemon. Updated to the 6th generation.
-#
-# Dependencies:
-#   None
-#
-# Configuration:
-#   None
-#
-# Commands:
-#   HEAR pokemon (name)
-#
-# Author:
-#   Cameron Crockrom
-
-#TODO Load this externally
-pokemon = [{"Name":"Bulbasaur","Type":"Grass","Type2":"Poison"},
+[{"Name":"Bulbasaur","Type":"Grass","Type2":"Poison"},
 {"Name":"Ivysaur","Type":"Grass","Type2":"Poison"},
 {"Name":"Venusaur","Type":"Grass","Type2":"Poison"},
 {"Name":"Charmander","Type":"Fire"},
@@ -761,13 +745,3 @@ pokemon = [{"Name":"Bulbasaur","Type":"Grass","Type2":"Poison"},
 {"Name":"Hoopa","Type":"Psychic","Type2":"Ghost"},
 {"Name":"Hoopa","Type":"Psychic","Type2":"Dark"},
 {"Name":"Volcanion","Type":"Fire","Type2":"Water"}]
-
-module.exports = (robot) ->
-  robot.hear /pokemon (.*)/i, (msg) ->
-    pokemonName = msg.match[1]
-    returnedPokemon = getPokemon(pokemonName)
-    msg.send "Name: #{returnedPokemon[0].Name} Types: #{returnedPokemon[0].Type} #{returnedPokemon[0].Type2}"
-
-getPokemon = (msg, name) ->
-    pokemon.filter (poke) ->
-      poke.Name.toLowerCase() == name.toLowerCase()
