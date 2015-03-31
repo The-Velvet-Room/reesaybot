@@ -760,7 +760,7 @@ module.exports = (robot) ->
     pokemonName = msg.match[1]
     returnedPokemon = getPokemon(msg, pokemonName)
     if (returnedPokemon? and returnedPokemon)
-    	returnedPokemon[0].Type2 = returnedPokemon[0].Type2 ""
+    	returnedPokemon[0].Type2 = returnedPokemon[0].Type2 ? ""
     	msg.send "Name: #{returnedPokemon[0].Name} Types: #{returnedPokemon[0].Type} #{returnedPokemon[0].Type2}"
     else
     	msg.send "That doesn't seem to be a real Pokemon, Senpai! Did you make it up?"
