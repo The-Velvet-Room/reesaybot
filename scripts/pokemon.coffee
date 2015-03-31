@@ -765,7 +765,7 @@ pokemon = [{"Name":"Bulbasaur","Type":"Grass","Type2":"Poison"},
 module.exports = (robot) ->
   robot.hear /pokemon (.*)/i, (msg) ->
     pokemonName = msg.match[1]
-    returnedPokemon = getPokemon(pokemonName)
+    returnedPokemon = getPokemon(msg, pokemonName)
     msg.send "Name: #{returnedPokemon[0].Name} Types: #{returnedPokemon[0].Type} #{returnedPokemon[0].Type2}"
 
 getPokemon = (msg, name) ->
