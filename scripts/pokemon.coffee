@@ -755,16 +755,129 @@ pokemon = [{"Name":"Bulbasaur","Type":"Grass","Type2":"Poison"},
 {"Name":"Hoopa","Type":"Psychic","Type2":"Ghost"},
 {"Name":"Volcanion","Type":"Fire","Type2":"Water"}]
 
+types = ["Bug","Dark","Dragon","Electric","Fairy","Fighting","Fire",
+"Flying","Ghost","Grass","Ground","Ice","Normal","Poison","Psychic",
+"Rock","Steel","Water"]
+
 module.exports = (robot) ->
   robot.hear /pokemon (.*)/i, (msg) ->
     pokemonName = msg.match[1]
     returnedPokemon = getPokemon(msg, pokemonName)
     if (returnedPokemon? and returnedPokemon.length > 0)
-    	returnedPokemon[0].Type2 = returnedPokemon[0].Type2 ? ""
-    	msg.send "Name: #{returnedPokemon[0].Name} Types: #{returnedPokemon[0].Type} #{returnedPokemon[0].Type2}"
+        returnedPokemon[0].Type2 = returnedPokemon[0].Type2 ? ""
+        msg.send "Name: #{returnedPokemon[0].Name} Types: #{returnedPokemon[0].Type} #{returnedPokemon[0].Type2}"
+        for(type in types)
+            damageMod = getDamageModifier(msg, type, returnedPokemon[0].Type) * getDamageModifier(msg, type, returnedPokemon[0].Type2)
+            msg.send "Very weak to #{type}." if damageMod is 4
+            msg.send "Weak to #{type}." if damageMod is 2
+            msg.send "Strong against #{type}." if damageMod is 0.5
+            msg.send "Very strong against #{type}." if damageMod is 0.25
     else
-    	msg.send "That doesn't seem to be a real Pokemon, Senpai! Did you make it up?"
+        msg.send "That doesn't seem to be a real Pokemon, Senpai! Did you make it up?"
 
 getPokemon = (msg, name) ->
     pokemon.filter (poke) ->
       poke.Name.toLowerCase() == name.toLowerCase()
+
+getDamageModifier = (msg, moveType, defType) ->
+    modifier = 1
+
+    switch moveType
+        when "Normal"
+            switch defType
+                when "Rock","Steel" then modifier*=0.5
+                when "Ghost" then modifier=0
+                else modifier*=1
+        when "Fighting"
+            switch defType
+                when "Normal","Rock","Steel","Ice","Dark" then modifier*=2
+                when "Flying","Poison","Bug","Psychic","Fairy" then modifier*=0.5
+                when "Ghost" then modifier=0
+                else modifier*=1
+        when "Flying"
+            switch defType
+                when "Fighting","Bug","Grass" then modifier*=2
+                when "Rock","Steel","Electric" then modifier*=0.5
+                else modifier*=1
+        when "Poison"
+            switch defType
+                when "Grass","Fairy" then modifier*=2
+                when "Poison","Ground","Rock","Ghost" then modifier*=0.5
+                when "Steel" then modifier=0
+                else modifier*=1
+        when "Ground"
+            switch defType
+                when "Poison","Rock","Steel","Fire","Electric" then modifier*=2
+                when "Bug","Ground","Grass" then modifier*=0.5
+                when "Flying" then modifier=0
+                else modifier*=1
+        when "Rock"
+            switch defType
+                when "Flying","Bug","Fire","Ice" then modifier*=2
+                when "Fighting","Ground","Steel" then modifier*=0.5
+                else modifier*=1
+        when "Bug"
+            switch defType
+                when "Grass","Psychic","Dark" then modifier*=2
+                when "Fighting","Flying","Poison","Ghost","Steel","Fire","Fairy" then modifier*=0.5
+                else modifier*=1
+        when "Ghost"
+            switch defType
+                when "Ghost","Psychic" then modifier*=2
+                when "Dark" then modifier*=0.5
+                when "Normal" then modifier=0
+                else modifier*=1
+        when "Steel"
+            switch defType
+                when "Rock","Ice","Fairy" then modifier*=2
+                when "Steel","Fire","Water","Electric" then modifier*=0.5
+                else modifier*=1
+        when "Fire"
+            switch defType
+                when "Bug","Steel","Grass","Ice" then modifier*=2
+                when "Rock","Fire","Water","Dragon" then modifier*=0.5
+                else modifier*=1
+        when "Water"
+            switch defType
+                when "Ground","Rock","Fire" then modifier*=2
+                when "Water","Grass","Dragon" then modifier*=0.5
+                else modifier*=1
+        when "Grass"
+            switch defType
+                when "Ground","Rock","Water" then modifier*=2
+                when "Flying","Poison","Bug","Steel","Fire","Grass" then modifier*=0.5
+                else modifier*=1
+        when "Electric"
+            switch defType
+                when "Flying","Water" then modifier*=2
+                when "Grass","Electric","Dragon" then modifier*=0.5
+                when "Ground" then modifier=0
+                else modifier*=1
+        when "Psychic"
+            switch defType
+                when "Fighting","Poison" then modifier*=2
+                when "Steel","Psychic" then modifier*=0.5
+                when "Dark" then modifier=0
+                else modifier*=1
+        when "Ice"
+            switch defType
+                when "Flying","Ground","Grass","Dragon" then modifier*=2
+                when "Steel","Fire","Water","Ice" then modifier*=0.5
+                else modifier*=1
+        when "Dragon"
+            switch defType
+                when "Dragon" then modifier*=2
+                when "Steel" then modifier*=0.5
+                when "Fairy" then modifier=0
+                else modifier*=1
+        when "Dark"
+            switch defType
+                when "Ghost","Psychic" then modifier*=2
+                when "Fighting","Dark","Fairy" then modifier*=0.5
+                else modifier*=1
+        when "Fairy"
+            switch defType
+                when "Fighting","Dragon","Dark" then modifier*=2
+                when "Steel","Poison","Fire" then modifier*=0.5
+                else modifier*=1
+    return modifier
