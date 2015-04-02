@@ -12,6 +12,7 @@ Notable Features
 * Interaction with the Twitch.tv API (Checking viewers, checking followers, changing game/status, etc.)
 * Interaction with the Challonge API (Updating tournament matches, fetching match history, starting bets from matches, etc.)
 * Interaction with the Dropbox API using Challonge data to autoupdate files that Open Broadcasting Software (OBS) can read
+* Fundamental Pokedex functionality
 
 TODO
 =========
