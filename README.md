@@ -18,3 +18,4 @@ TODO
 =========
 * SRL style Racebot features (start race, stop race, participants, race rating, etc.)
 * World Record fetching
+* Administrative actions (banning, timeouts, etc.)
