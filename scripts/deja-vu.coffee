@@ -14,8 +14,8 @@
 #   Camtendo
 
 module.exports = (robot) ->
-  robot.router.get '/hubot/replay/:url', (req, res) ->
+  robot.router.post '/replay/:url', (req, res) ->
   url = req.params.url
   #Hardcoded for now until I understand the data structure more
   robot.messageRoom '#camtendo', "I have a replay to show you guys! #{url}"
-  res.end
+  res.end 'Success'
