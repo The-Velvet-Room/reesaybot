@@ -15,7 +15,7 @@
 
 module.exports = (robot) ->
   robot.router.post '/replay/', (req, res) ->
-  	data = if req.body.payload? then JSON.parse req.body.payload else req.body
+    data = if req.body.payload? then JSON.parse req.body.payload else req.body
     url = data.url
     #Hardcoded for now until I understand the data structure more
 
