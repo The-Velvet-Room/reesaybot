@@ -17,7 +17,7 @@ Util = require 'util'
 
 module.exports = (robot) ->
   robot.router.post '/replay/', (req, res) ->
-    url = req.body
+    url = req.params.url
     #Hardcoded for now until I understand the data structure more
     robot.messageRoom '#camtendo', "DEBUG #{Util.inspect(url)}"
     robot.messageRoom '#camtendo', "I have a replay to show you guys! #{url}"
