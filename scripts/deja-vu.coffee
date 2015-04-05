@@ -14,8 +14,10 @@
 #   Camtendo
 
 module.exports = (robot) ->
-  robot.router.post '/replay/:url', (req, res) ->
-    url = req.params.url
+  robot.router.post '/replay/', (req, res) ->
+  	data = if req.body.payload? then JSON.parse req.body.payload else req.body
+    url = data.url
     #Hardcoded for now until I understand the data structure more
+
     robot.messageRoom '#camtendo', "I have a replay to show you guys! #{url}"
     res.end 'Success'
