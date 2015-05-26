@@ -759,8 +759,12 @@ types = ["Bug","Dark","Dragon","Electric","Fairy","Fighting","Fire",
 "Flying","Ghost","Grass","Ground","Ice","Normal","Poison","Psychic",
 "Rock","Steel","Water"]
 
+admins =  process.env.ADMINS.split " " || [""]
+
 module.exports = (robot) ->
   robot.hear /pokemon (.*)/i, (msg) ->
+    if !isAdmin(msg.message.user.name)
+        return 0
     pokemonName = msg.match[1]
     returnedPokemon = getPokemon(msg, pokemonName)
     if (returnedPokemon? and returnedPokemon.length > 0)
@@ -781,6 +785,9 @@ module.exports = (robot) ->
 getPokemon = (msg, name) ->
     pokemon.filter (poke) ->
       poke.Name.toLowerCase() == name.toLowerCase()
+
+isAdmin = (term) ->
+    admins.indexOf(term) isnt -1
 
 getDamageModifier = (msg, moveType, defType) ->
     modifier = 1

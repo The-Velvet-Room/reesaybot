@@ -194,7 +194,8 @@ module.exports = (robot) ->
       msg.send leaderboardUrl
 
   robot.hear /bracket/i, (msg) ->
-    #return 0 if !isAdmin msg.message.user.name and tournamentHash == ''
+    if !isAdmin(msg.message.user.name) and tournamentHash == ''
+      return 0
     return msg.send('If you are asking about a bracket for our tournament, I don\'t know what it is.') if tournamentHash == ''
     return msg.send('challonge.com/'+tournamentHash) if tournamentHash.indexOf('-') == -1
     split = tournamentHash.split '-'
