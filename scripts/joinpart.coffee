@@ -20,7 +20,7 @@ module.exports = (robot) ->
   	  if msg.message.user.name.toLowerCase() isnt robot.name.toLowerCase()
       	msg.send "Welcome to the channel, #{msg.message.user.name}-Senpai! I've loaded special commands for you! TriHard" if isAdmin msg.message.user.name
       else
-      	msg.send "Whoops! I either crashed or restarted. OpieOP "+msg.robot.commands.length+" commands were loaded. Twitch Build Hash = "+uniqueId(16)
+      	msg.send "Whoops! I either crashed or restarted. OpieOP "+msg.robot.commands.length+" commands were loaded and I am aware of "+admins.length+" admins. Twitch Build Hash = "+uniqueId(16)
 
   #robot.leave (msg) ->
   #    msg.send "#{msg.message.user.name} left..."
