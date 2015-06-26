@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#   HEAR pokemon (name)
+#   HEAR ~pokemon (name)
 #
 # Author:
 #   Cameron Crockrom
@@ -762,9 +762,9 @@ types = ["Bug","Dark","Dragon","Electric","Fairy","Fighting","Fire",
 admins =  process.env.ADMINS.split " " || [""]
 
 module.exports = (robot) ->
-  robot.hear /pokemon (.*)/i, (msg) ->
-    if !isAdmin(msg.message.user.name)
-        return 0
+  robot.hear /~pokemon (.*)/i, (msg) ->
+    #if !isAdmin(msg.message.user.name)
+    #    return 0
     pokemonName = msg.match[1]
     returnedPokemon = getPokemon(msg, pokemonName)
     if (returnedPokemon? and returnedPokemon.length > 0)
