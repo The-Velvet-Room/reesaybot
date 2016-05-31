@@ -47,7 +47,7 @@ module.exports = (robot) ->
     msg.send list
 
   robot.hear /add (.*)/i, (msg) ->
-    item = msg.match[2].trim()
+    item = msg.match[1].trim()
     groceryList.add item
     msg.send "Ok, added #{item} to the queue!"
 
