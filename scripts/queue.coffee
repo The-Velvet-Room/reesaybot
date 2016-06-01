@@ -43,7 +43,7 @@ module.exports = (robot) ->
       robot.brain.data.groceryList.purchased[item] = true
 
   robot.hear /queue$/i, (msg) ->
-    list = groceryList.get().join("\n") || "No items in the queue Senpai!"
+    list = groceryList.get().join(", ") || "No items in the queue Senpai!"
     msg.send list
 
   robot.hear /add (.*)/i, (msg) ->
@@ -64,7 +64,7 @@ module.exports = (robot) ->
     msg.send "Ok, removed #{item} from the queue."
 
   robot.hear /completed items/i, (msg) ->
-    list = groceryList.getPurchased().join("\n") || "You haven't completed anything, Senpai."
+    list = groceryList.getPurchased().join(", ") || "You haven't completed anything, Senpai."
     msg.send list
 
   isAdmin = (term) ->
